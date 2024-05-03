@@ -1,8 +1,10 @@
+/* eslint-disable react/no-unescaped-entities */
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import useSignUp from '../hooks/useSignup';
 import useSignIn from '../hooks/useSignin';
 import UserAccountPage from './UserAccountPage';
+import Logo from '../assets/logo.png';
 
 const AuthForm = () => {
   const [isSignUp, setIsSignUp] = useState(true);
@@ -35,62 +37,82 @@ const AuthForm = () => {
           isAuthenticated ? (
             <Navigate to="/account" />
           ) : (
-            <div className="w-full h-screen flex justify-center items-center bg-gray-100">
-              <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
-                <h2 className="text-2xl font-bold mb-4">{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
-                {error && <p className="text-red-500 mb-4">{error}</p>}
-                <form onSubmit={handleSubmit}>
-                  {isSignUp && (
+            <div className="flex flex-col md:flex-row h-screen">
+              <div className="w-full py-52 md:py-8 md:w-1/2 bg-gray-100 flex justify-center items-center relative">
+                <img src={Logo} alt="Logo" className="absolute left-7 top-10 w-24 h-18" />
+                <div className="md:w-[500px] w-[300px] px-4">
+                  <h2 className="w-full mx-auto text-gray-700 text-5xl font-bold font-['Inter'] leading-[48px] mb-20">{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
+                  {error && <p className="text-red-500 mb-4">{error}</p>}
+                  <form onSubmit={handleSubmit}>
+                    {isSignUp && (
+                      <input
+                        type="text"
+                        name="username"
+                        placeholder="Matric Number"
+                        value={signUpData.username}
+                        onChange={handleSignUpChange}
+                        className="w-full p-3 mb-4 border border-gray-300 rounded-3xl focus:outline-none"
+                      />
+                    )}
                     <input
-                      type="text"
-                      name="username"
-                      placeholder="Matric Number"
-                      value={signUpData.username}
-                      onChange={handleSignUpChange}
-                      className="w-full p-2 mb-4 border border-gray-300 rounded"
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      value={isSignUp ? signUpData.email : signInData.email}
+                      onChange={isSignUp ? handleSignUpChange : handleSignInChange}
+                      className="w-full p-3 mb-4 border border-gray-300 rounded-3xl focus:outline-none"
                     />
-                  )}
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={isSignUp ? signUpData.email : signInData.email}
-                    onChange={isSignUp ? handleSignUpChange : handleSignInChange}
-                    className="w-full p-2 mb-4 border border-gray-300 rounded"
-                  />
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={isSignUp ? signUpData.password : signInData.password}
-                    onChange={isSignUp ? handleSignUpChange : handleSignInChange}
-                    className="w-full p-2 mb-4 border border-gray-300 rounded"
-                  />
-                  <button
-                    type="submit"
-                    className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? 'Loading...' : isSignUp ? 'Sign Up' : 'Sign In'}
-                  </button>
-                </form>
-                <p className="mt-4 text-center">
-                  {isSignUp ? (
-                    <span>
-                      Already have an account?{' '}
-                      <button onClick={handleToggleForm} className="text-blue-500 hover:underline">
-                        Sign In
-                      </button>
-                    </span>
-                  ) : (
-                    <span>
-                      Don't have an account?{' '}
-                      <button onClick={handleToggleForm} className="text-blue-500 hover:underline">
-                        Sign Up
-                      </button>
-                    </span>
-                  )}
-                </p>
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                      value={isSignUp ? signUpData.password : signInData.password}
+                      onChange={isSignUp ? handleSignUpChange : handleSignInChange}
+                      className="w-full p-3 mb-4 border border-gray-300 rounded-3xl focus:outline-none"
+                    />
+                    <button
+                      type="submit"
+                      className="w-full bg-green-800 text-white py-2 rounded hover:bg-green-700"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? 'Loading...' : isSignUp ? 'Sign Up' : 'Sign In'}
+                    </button>
+                  </form>
+                  <p className="mt-4 text-center">
+                    {isSignUp ? (
+                      <span className="text-gray-400 text-base font-normal font-['Inter'] leading-[27px]">
+                        Already have an account?{' '}
+                        <button
+                          onClick={handleToggleForm}
+                          className="text-green-900 text-base font-medium font-['Inter'] underline leading-[27px]"
+                        >
+                          Sign In
+                        </button>
+                      </span>
+                    ) : (
+                      <span className="text-gray-400 text-base font-normal font-['Inter'] leading-[27px]">
+                        Don't have an account?{' '}
+                        <button
+                          onClick={handleToggleForm}
+                          className="text-green-900 text-base font-medium font-['Inter'] underline leading-[27px]"
+                        >
+                          Create now
+                        </button>
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+              <div className="w-full md:w-1/2 bg-gradient-to-tr from-gray-500 via-gray-300 to-gray-500 flex justify-center items-center md:block relative">
+                {/* <img src={Logo} alt="Logo" className="absolute top-4 left-4 w-12 h-12" /> */}
+                <div className="w-[525px] h-[334px] relative bg-slate-50 rounded-[10px] md:block hidden mx-auto mt-48">
+                  <div className="w-[386px] h-[103px] left-[44px] top-[109px] absolute text-gray-400 text-base font-medium font-['Inter'] leading-7">
+                    Cribbers Awards streamlines the voting process for your award show and events, making it easy for participants to cast their votes and contribute to the selection of winners.
+                  </div>
+                  <div className="w-[300px] h-[99px] left-[44px] top-[36px] absolute text-gray-400 text-2xl font-bold font-['Inter']">
+                    Cribbers, vote for your winners instantly!
+                  </div>
+                </div>
               </div>
             </div>
           )
