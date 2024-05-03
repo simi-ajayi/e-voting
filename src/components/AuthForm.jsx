@@ -72,7 +72,7 @@ const AuthForm = () => {
                     />
                     <button
                       type="submit"
-                      className="w-full bg-green-800 text-white py-2 rounded hover:bg-green-700"
+                      className="w-full bg-green-800 text-white py-2 hover:bg-green-700 rounded-xl"
                       disabled={isLoading}
                     >
                       {isLoading ? 'Loading...' : isSignUp ? 'Sign Up' : 'Sign In'}
