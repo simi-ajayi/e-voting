@@ -1,13 +1,25 @@
-import { HashRouter as BrowserRouter, Routes, Route } from "react-router-dom"
+import { useEffect } from "react";
+import { BrowserRouter as BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import AuthForm from "./components/AuthForm";
 import Arrowtothetop from './components/Arrowtothetop';
 import Home from "./components/Home";
 import VoteCategory from "./components/VoteCategory";
 import UserAccountPage from "./components/UserAccountPage";
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 const App = () => {
   return (
-    <BrowserRouter scrollRestoration="auto">
+    <BrowserRouter>
+      <ScrollToTop />
       <Arrowtothetop />
       <Routes>
         <Route path="/" element={<AuthForm />} />
