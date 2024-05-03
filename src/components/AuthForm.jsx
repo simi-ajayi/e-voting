@@ -41,7 +41,7 @@ const AuthForm = () => {
               <div className="w-full py-52 md:py-8 md:w-1/2 bg-gray-100 flex justify-center items-center relative">
                 <img src={Logo} alt="Logo" className="absolute left-7 top-10 w-24 h-18" />
                 <div className="md:w-[500px] w-[370px] px-4">
-                  <h2 className="w-full mx-auto text-gray-700 text-5xl font-bold font-['Inter'] leading-[48px] mb-20">{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
+                  <div className='w-full pl-[25%]'><h2 className="w-full  text-gray-700 text-5xl font-bold font-['Inter'] leading-[48px] mb-20">{isSignUp ? 'Sign Up' : 'Sign In'}</h2></div>
                   {error && <p className="text-red-500 mb-4">{error}</p>}
                   <form onSubmit={handleSubmit}>
                     {isSignUp && (
