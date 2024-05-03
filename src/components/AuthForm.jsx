@@ -72,7 +72,7 @@ const AuthForm = () => {
                     />
                    <button
   type="submit"
-  className="w-full bg-green-800 text-white py-2 hover:bg-green-700 rounded-xl flex items-center justify-center"
+  className="w-full bg-[#2e9196] text-white py-2 hover:bg-[#38A8AD] rounded-xl flex items-center justify-center"
   disabled={isLoading}
 >
   {isLoading ? (
@@ -110,7 +110,7 @@ const AuthForm = () => {
                         Already have an account?{' '}
                         <button
                           onClick={handleToggleForm}
-                          className="text-green-900 text-base font-medium font-['Inter'] underline leading-[27px]"
+                          className="text-gray-700 text-base font-medium font-['Inter'] underline leading-[27px]"
                         >
                           Sign In
                         </button>
@@ -120,7 +120,7 @@ const AuthForm = () => {
                         Don't have an account?{' '}
                         <button
                           onClick={handleToggleForm}
-                          className="text-green-900 text-base font-medium font-['Inter'] underline leading-[27px]"
+                          className="text-gray-700 text-base font-medium font-['Inter'] underline leading-[27px]"
                         >
                           Create now
                         </button>
