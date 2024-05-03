@@ -6,6 +6,7 @@ import backgroundImage from '../assets/thumb.jpg';
 
 const AdminPage = ({ events, setEvents }) => {
     const [selectedEvent, setSelectedEvent] = useState(null);
+    
 
     const handleCreateEvent = async (eventData) => {
         try {

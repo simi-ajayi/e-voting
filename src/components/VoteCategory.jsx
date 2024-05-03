@@ -106,18 +106,7 @@ const VoteCategory = () => {
         Number of Votes
       </div>
       <div className="relative md:left-[48px] md:top-[525px] md:absolute">
-      <input
-  type="number"
-  id="votes"
-  className="w-full h-[40px] rounded-[10px] border border-black bg-white pl-12 pr-4 md:w-[355px]"
-  onChange={handleVoteChange}
-  value={selectedVotes}
-  min="1"
-  max="1000"
-  step="1"
-  inputMode="numeric"
-  pattern="\d*"
-/>
+        
       </div>
       <div className="flex-row flex w-full">
       <div className="text-black text-sm font-light font-Poppins tracking-wide mt-4 md:mt-0 md:left-[57px] md:top-[576px] md:absolute">
