@@ -18,21 +18,40 @@ const useSignIn = () => {
     setError(null);
 
     try {
-      // Here, you would make an API call to your backend for authentication
-      // For this example, we'll simulate a successful sign-in after a delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Dummy admin credentials
+      const adminEmail = 'admin@example.com';
+      const adminPassword = 'password123';
 
-      // Assuming the sign-in was successful
-      return true;
+      // Check if the provided credentials match the admin credentials
+      if (
+        signInData.email === adminEmail &&
+        signInData.password === adminPassword
+      ) {
+        // Simulate a successful admin sign-in after a delay
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // Return true for successful admin sign-in
+        return { isAdmin: true };
+      } else {
+        // Simulate a successful user sign-in after a delay
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // Return false for regular user sign-in
+        return { isAdmin: false };
+      }
     } catch (error) {
       setError('Sign-in failed. Please check your credentials.');
-      return false;
+      return { isAdmin: false };
     } finally {
       setIsLoading(false);
     }
   };
 
-  return { signInData, handleSignInChange, handleSignIn, error, isLoading };
+  return {
+    signInData,
+    handleSignInChange,
+    handleSignIn,
+    error,
+    isLoading,
+  };
 };
 
 export default useSignIn;

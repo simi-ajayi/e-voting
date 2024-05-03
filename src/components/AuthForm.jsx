@@ -5,12 +5,14 @@ import useSignUp from '../hooks/useSignup';
 import useSignIn from '../hooks/useSignin';
 import UserAccountPage from './UserAccountPage';
 import Logo from '../assets/logo.png';
+import AdminPage from './AdminPage';
 
 const AuthForm = () => {
-  const [isSignUp, setIsSignUp] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false); // Set isSignUp to false initially
   const { signUpData, handleSignUpChange, handleSignUp } = useSignUp();
   const { signInData, handleSignInChange, handleSignIn, error, isLoading } = useSignIn();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,10 +20,9 @@ const AuthForm = () => {
       await handleSignUp();
       setIsAuthenticated(true);
     } else {
-      const success = await handleSignIn();
-      if (success) {
-        setIsAuthenticated(true);
-      }
+      const { isAdmin: admin } = await handleSignIn(); // Destructure isAdmin from the return value
+      setIsAdmin(admin);
+      setIsAuthenticated(true);
     }
   };
 
@@ -35,7 +36,11 @@ const AuthForm = () => {
         path="/"
         element={
           isAuthenticated ? (
-            <Navigate to="/account" />
+            isAdmin ? (
+              <Navigate to="/admin" />
+            ) : (
+              <Navigate to="/account" />
+            )
           ) : (
             <div className="flex flex-col md:flex-row h-screen">
               <div className="w-full py-52 md:py-8 md:w-1/2 bg-gray-100 flex justify-center items-center relative">
@@ -71,9 +76,9 @@ const AuthForm = () => {
                       className="w-full p-3 mb-4 border border-gray-300 rounded-3xl focus:outline-none"
                     />
                    <button
-  type="submit"
-  className="w-full bg-[#2e9196] text-white py-2 hover:bg-[#38A8AD] rounded-xl flex items-center justify-center"
-  disabled={isLoading}
+                      type="submit"
+                         className="w-full bg-[#2e9196] text-white py-2 hover:bg-[#38A8AD] rounded-xl flex items-center justify-center"
+                     disabled={isLoading}
 >
   {isLoading ? (
     <svg
@@ -146,7 +151,12 @@ const AuthForm = () => {
       />
       <Route
         path="/account"
-        element={isAuthenticated ? <UserAccountPage /> : <Navigate to="/" />}
+        element={isAuthenticated && !isAdmin ? <UserAccountPage /> : <Navigate to="/" />}
+      />
+      {/* Add a new route for the admin page */}
+      <Route
+        path="/admin"
+        element={isAuthenticated && isAdmin ? <AdminPage /> : <Navigate to="/" />}
       />
     </Routes>
   );
