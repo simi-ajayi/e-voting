@@ -72,7 +72,7 @@ const AdminPage = ({ events, setEvents }) => {
               <ul>
                 {events.length > 0 ? (
                   events.map((event) => (
-                    <li key={event.id} className="bg-white shadow-3xl w-[400px] rounded-[35px] opacity-90 p-4 mb-4">
+                    <li key={event.id} className="bg-white shadow-3xl w-full rounded-[35px] opacity-90 p-4 mb-4">
                       <div className="flex justify-between items-center">
                         <div>
                           <h3 className="text-lg font-semibold">{event.name}</h3>
