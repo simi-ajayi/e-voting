@@ -53,7 +53,7 @@ const AuthForm = () => {
                       <input
                         type="text"
                         name="username"
-                        placeholder="Matric Number"
+                        placeholder="Username"
                         value={signUpData.username}
                         onChange={handleSignUpChange}
                         className="w-full p-3 mb-4 border border-gray-300 rounded-3xl focus:outline-none"
