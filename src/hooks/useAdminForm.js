@@ -1,83 +1,132 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 
-const useAdminForm = (initialEvent) => {
+const useAdminForm = (event) => {
   const [eventData, setEventData] = useState({
-    name: '',
-    description: '',
-    eventType: 'voting', // Default to 'voting'
-    categories: [],
+    name: event ? event.name : '',
+    description: event ? event.description : '',
+    eventType: event ? event.eventType : 'voting',
+    categories: event ? event.categories : [],
+    assignedUser: event ? event.assignedUser : '',
   });
-  const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    if (initialEvent) {
-      setEventData(initialEvent);
-    }
-  }, [initialEvent]);
-
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-
-  const fetchEvents = async () => {
-    try {
-      const response = await axios.get('your-api-url/events');
-      setEvents(response.data);
-    } catch (error) {
-      console.error('Error fetching events:', error);
-    }
-  };
-
-  const handleSubmit = async () => {
-    try {
-      // Assuming you have an API endpoint for submitting event data
-      await axios.post('your-api-url/submit-event', eventData);
-      // After successful submission, fetch events again to update the list
-      fetchEvents();
-      // Reset form after submission
-      resetForm();
-    } catch (error) {
-      console.error('Error submitting event data:', error);
-    }
-  };
+    setEventData({
+      name: event ? event.name : '',
+      description: event ? event.description : '',
+      eventType: event ? event.eventType : 'voting',
+      categories: event ? event.categories : [],
+      assignedUser: event ? event.assignedUser : '',
+    });
+  }, [event]);
 
   const handleChange = (e) => {
-    setEventData({ ...eventData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setEventData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const handleAddCategory = () => {
-    setEventData({
-      ...eventData,
-      categories: [...eventData.categories, { name: '', nominees: [] }],
-    });
+    setEventData((prevState) => ({
+      ...prevState,
+      categories: [...prevState.categories, { name: '', nominees: [] }],
+    }));
   };
 
   const handleAddNominee = (categoryIndex) => {
-    const updatedCategories = [...eventData.categories];
-    updatedCategories[categoryIndex].nominees.push({ name: '', imageUrl: '' });
-    setEventData({ ...eventData, categories: updatedCategories });
+    setEventData((prevState) => {
+      const updatedCategories = prevState.categories.map((category, index) => {
+        if (index === categoryIndex) {
+          return {
+            ...category,
+            nominees: [...category.nominees, { name: '', imageUrl: '' }],
+          };
+        }
+        return category;
+      });
+      return {
+        ...prevState,
+        categories: updatedCategories,
+      };
+    });
   };
 
   const handleCategoryNameChange = (e, categoryIndex) => {
-    const updatedCategories = [...eventData.categories];
-    updatedCategories[categoryIndex].name = e.target.value;
-    setEventData({ ...eventData, categories: updatedCategories });
+    const { value } = e.target;
+    setEventData((prevState) => {
+      const updatedCategories = prevState.categories.map((category, index) => {
+        if (index === categoryIndex) {
+          return {
+            ...category,
+            name: value,
+          };
+        }
+        return category;
+      });
+      return {
+        ...prevState,
+        categories: updatedCategories,
+      };
+    });
   };
 
   const handleNomineeChange = (e, categoryIndex, nomineeIndex) => {
-    const updatedCategories = [...eventData.categories];
-    updatedCategories[categoryIndex].nominees[nomineeIndex][e.target.name] = e.target.value;
-    setEventData({ ...eventData, categories: updatedCategories });
+    const { name, value } = e.target;
+    setEventData((prevState) => {
+      const updatedCategories = prevState.categories.map((category, cIndex) => {
+        if (cIndex === categoryIndex) {
+          const updatedNominees = category.nominees.map((nominee, nIndex) => {
+            if (nIndex === nomineeIndex) {
+              return {
+                ...nominee,
+                [name]: value,
+              };
+            }
+            return nominee;
+          });
+          return {
+            ...category,
+            nominees: updatedNominees,
+          };
+        }
+        return category;
+      });
+      return {
+        ...prevState,
+        categories: updatedCategories,
+      };
+    });
   };
 
   const handleImageUpload = (e, categoryIndex, nomineeIndex) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-    reader.onloadend = () => {
-      const updatedCategories = [...eventData.categories];
-      updatedCategories[categoryIndex].nominees[nomineeIndex].imageUrl = reader.result;
-      setEventData({ ...eventData, categories: updatedCategories });
+    reader.onload = () => {
+      setEventData((prevState) => {
+        const updatedCategories = prevState.categories.map((category, cIndex) => {
+          if (cIndex === categoryIndex) {
+            const updatedNominees = category.nominees.map((nominee, nIndex) => {
+              if (nIndex === nomineeIndex) {
+                return {
+                  ...nominee,
+                  imageUrl: reader.result,
+                };
+              }
+              return nominee;
+            });
+            return {
+              ...category,
+              nominees: updatedNominees,
+            };
+          }
+          return category;
+        });
+        return {
+          ...prevState,
+          categories: updatedCategories,
+        };
+      });
     };
     if (file) {
       reader.readAsDataURL(file);
@@ -85,14 +134,18 @@ const useAdminForm = (initialEvent) => {
   };
 
   const resetForm = () => {
-    setEventData({ name: '', description: '', eventType: 'voting', categories: [] }); // Reset eventType to 'voting'
+    setEventData({
+      name: '',
+      description: '',
+      eventType: 'voting',
+      categories: [],
+      assignedUser: '',
+    });
   };
 
   return {
     eventData,
-    events,
     handleChange,
-    handleSubmit,
     handleAddCategory,
     handleAddNominee,
     handleCategoryNameChange,

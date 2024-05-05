@@ -71,10 +71,10 @@ const AuthForm = () => {
                       />
                     )}
                     <input
-                      type="email"
-                      name="email"
-                      placeholder="Email"
-                      value={isSignUp ? signUpData.email : signInData.email}
+                      type="text"
+                      name="login"
+                      placeholder="Email/Username"
+                      value={isSignUp ? signUpData.login : signInData.login}
                       onChange={isSignUp ? handleSignUpChange : handleSignInChange}
                       className="w-full p-3 mb-4 border border-gray-300 rounded-3xl focus:outline-none"
                     />

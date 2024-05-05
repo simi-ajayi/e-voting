@@ -5,108 +5,112 @@ import Bg from '../assets/bg.jpeg';
 import Navbar from "../components/Navbar";
 import SignOutButton from "../components/SignOutButton";
 import { AiOutlineArrowLeft } from 'react-icons/ai';
+import PropTypes from "prop-types";
 
-const VoteCategory = () => {
-    const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-    const title = searchParams.get("title");
-    const nomineeData = searchParams.get("nominees");
+const VoteCategory = ({ eventId, onVoteSubmitted }) => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const title = searchParams.get("title");
+  const nomineeData = searchParams.get("nominees");
 
-    const nominees = useMemo(() => {
-        return nomineeData ? JSON.parse(decodeURIComponent(nomineeData)) : [];
-    }, [nomineeData]);
+  const nominees = useMemo(() => {
+    return nomineeData ? JSON.parse(decodeURIComponent(nomineeData)) : [];
+  }, [nomineeData]);
 
-    const [selectedVotes, setSelectedVotes] = useState(1);
-    const [selectedContestant, setSelectedContestant] = useState(null);
-    const [voterName, setVoterName] = useState("");
-    const [voterEmail, setVoterEmail] = useState("");
-    const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
+  const [selectedVotes, setSelectedVotes] = useState(1);
+  const [selectedContestant, setSelectedContestant] = useState(null);
+  const [voterName, setVoterName] = useState("");
+  const [voterEmail, setVoterEmail] = useState("");
+  const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
 
-    const handleVoteChange = (e) => {
-        setSelectedVotes(parseInt(e.target.value));
-    };
+  const handleVoteChange = (e) => {
+    setSelectedVotes(parseInt(e.target.value));
+  };
 
-    const handleContestantChange = (e) => {
-        setSelectedContestant(e.target.value);
-    };
+  const handleContestantChange = (e) => {
+    setSelectedContestant(e.target.value);
+  };
 
-    const handleVoterNameChange = (e) => {
-        setVoterName(e.target.value);
-    };
+  const handleVoterNameChange = (e) => {
+    setVoterName(e.target.value);
+  };
 
-    const handleVoterEmailChange = (e) => {
-        setVoterEmail(e.target.value);
-    };
+  const handleVoterEmailChange = (e) => {
+    setVoterEmail(e.target.value);
+  };
 
-    const calculatePrice = () => {
-        const pricePerVote = 50;
-        return selectedVotes * pricePerVote;
-    };
+  const calculatePrice = () => {
+    const pricePerVote = 50;
+    return selectedVotes * pricePerVote;
+  };
 
-    const getContestantImage = () => {
-        const contestant = nominees.find((nominee) => nominee.name === selectedContestant);
-        return contestant ? contestant.imageUrl : "https://static.vecteezy.com/system/resources/previews/036/280/650/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg";
-    };
+  const getContestantImage = () => {
+    const contestant = nominees.find((nominee) => nominee.name === selectedContestant);
+    return contestant ? contestant.imageUrl : "https://static.vecteezy.com/system/resources/previews/036/280/650/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg";
+  };
 
-    const handlePayment = async () => {
-        try {
-            const paymentData = {
-                voterName,
-                voterEmail,
-                amount: calculatePrice(),
-            };
+  const handlePayment = async () => {
+    try {
+      const paymentData = {
+        voterName,
+        voterEmail,
+        amount: calculatePrice(),
+      };
 
-            // Make an API call to process the payment
-            const response = await axios.post("/api/payments", paymentData);
+      // Make an API call to process the payment
+      const response = await axios.post("/api/payments", paymentData);
 
-            if (response.data.success) {
-                setIsPaymentSuccessful(true);
-                // Show a success message or redirect to a thank you page
-                alert("Payment successful! Your vote will now be submitted.");
-            } else {
-                // Show an error message to the user
-                alert("Payment failed. Please try again.");
-            }
-        } catch (error) {
-            console.error("Error processing payment:", error);
-            // Show an error message to the user
-            alert("An error occurred while processing the payment. Please try again.");
-        }
-    };
+      if (response.data.success) {
+        setIsPaymentSuccessful(true);
+        // Show a success message or redirect to a thank you page
+        alert("Payment successful! Your vote will now be submitted.");
+      } else {
+        // Show an error message to the user
+        alert("Payment failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error processing payment:", error);
+      // Show an error message to the user
+      alert("An error occurred while processing the payment. Please try again.");
+    }
+  };
 
-    const handleSubmitVote = async () => {
-        if (!isPaymentSuccessful) {
-            alert("Please complete the payment before submitting your vote.");
-            return;
-        }
+  const handleSubmitVote = async () => {
+    if (!isPaymentSuccessful) {
+      alert("Please complete the payment before submitting your vote.");
+      return;
+    }
 
-        try {
-            const voteData = {
-                voterName,
-                voterEmail,
-                contestant: selectedContestant,
-                votes: selectedVotes,
-                price: calculatePrice(),
-            };
+    try {
+      const voteData = {
+        voterName,
+        voterEmail,
+        contestant: selectedContestant,
+        votes: selectedVotes,
+        price: calculatePrice(),
+      };
 
-            // Make an API call to submit the vote
-            await axios.post("/api/votes", voteData);
+      // Make an API call to submit the vote
+      await axios.post(`/api/events/${eventId}/votes`, voteData);
 
-            // Clear form fields after successful submission
-            setSelectedContestant(null);
-            setSelectedVotes(1);
-            setVoterName("");
-            setVoterEmail("");
-            setIsPaymentSuccessful(false);
+      // Clear form fields after successful submission
+      setSelectedContestant(null);
+      setSelectedVotes(1);
+      setVoterName("");
+      setVoterEmail("");
+      setIsPaymentSuccessful(false);
 
-            // Show a success message or redirect to a thank you page
-            alert("Your vote has been submitted successfully!");
-        } catch (error) {
-            console.error("Error submitting vote:", error);
-            // Show an error message to the user
-            alert("An error occurred while submitting your vote. Please try again.");
-        }
-    };
+      // Notify the parent component (AdminPage) about the submitted vote
+      onVoteSubmitted(eventId, voteData);
+
+      // Show a success message or redirect to a thank you page
+      alert("Your vote has been submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting vote:", error);
+      // Show an error message to the user
+      alert("An error occurred while submitting your vote. Please try again.");
+    }
+  };
 
     return (
         <div>
@@ -255,6 +259,11 @@ const VoteCategory = () => {
             </div>
         </div>
     );
+};
+
+VoteCategory.propTypes = {
+  eventId: PropTypes.string.isRequired,
+  onVoteSubmitted: PropTypes.func.isRequired,
 };
 
 export default VoteCategory;

@@ -1,9 +1,28 @@
-// EVotingPage.js
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import SignOutButton from './SignOutButton';
 import backgroundImage from '../assets/thumb.jpg';
+import PropTypes from 'prop-types';
 
-const EVotingPage = ({ events }) => {
+const EVotingPage = ({ currentUser }) => {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get('/api/events');
+      setEvents(response.data);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
+
+  const filteredEvents = events.filter((event) => event.assignedUser === currentUser);
+
   return (
     <div className='font-[inter]'>
       <SignOutButton />
@@ -21,7 +40,7 @@ const EVotingPage = ({ events }) => {
               Welcome to the Voting Page
             </h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {events.map((event, index) => (
+              {filteredEvents.map((event, index) => (
                 <div
                   key={event.id}
                   className="bg-white shadow-3xl rounded-[35px] opacity-90 p-7 flex flex-col justify-between"
@@ -31,8 +50,10 @@ const EVotingPage = ({ events }) => {
                     <p className="text-gray-700 mb-4">{event.description}</p>
                   </div>
                   <Link
-                    to={event.link}
-                    className={`bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg inline-block text-center ${index === 0 ? 'animate-bounce' : ''}`}
+                    to={`/votecategory?eventId=${event.id}&title=${encodeURIComponent(event.name)}&nominees=${encodeURIComponent(JSON.stringify(event.nominees))}`}
+                    className={`bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg inline-block text-center ${
+                      index === 0 ? 'animate-bounce' : ''
+                    }`}
                   >
                     {index === 0 ? 'Voting is Live!' : 'Vote'}
                   </Link>
@@ -44,6 +65,10 @@ const EVotingPage = ({ events }) => {
       </div>
     </div>
   );
+};
+
+EVotingPage.propTypes = {
+  currentUser: PropTypes.string.isRequired,
 };
 
 export default EVotingPage;

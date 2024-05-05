@@ -19,6 +19,13 @@ const AdminForm = ({ event, onSubmit }) => {
     resetForm();
   };
 
+  // Dummy users
+  const users = [
+    { id: '1', name: 'AUSA' },
+    { id: '2', name: 'EKSU' },
+    { id: '3', name: 'FUTA' },
+  ];
+
   return (
     <form onSubmit={handleSubmit} className="bg-white shadow-3xl rounded-[35px] opacity-90 p-7 flex flex-col justify-between">
       <div>
@@ -58,6 +65,23 @@ const AdminForm = ({ event, onSubmit }) => {
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md py-2 px-3 mt-1 mb-4"
           />
+        </div>
+        <div>
+          <label htmlFor="assignedUser" className="text-gray-700">Select an Organizer:</label>
+          <select
+            id="assignedUser"
+            name="assignedUser"
+            value={eventData.assignedUser}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded-md py-2 px-3 mt-1 mb-4"
+          >
+            <option value="">Select Organizer</option>
+            {users.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.name}
+              </option>
+            ))}
+          </select>
         </div>
         {event && eventData.eventType === 'voting' && (
           <button type="button" onClick={handleAddCategory} className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 my-2 px-4 rounded-lg mt-4">
@@ -121,6 +145,7 @@ AdminForm.propTypes = {
         imageUrl: PropTypes.string,
       })),
     })),
+    assignedUser: PropTypes.string,
   }),
   onSubmit: PropTypes.func.isRequired,
 };
