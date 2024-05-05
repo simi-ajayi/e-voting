@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { BrowserRouter as BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom'; // Import HashRouter
 import AuthForm from './components/AuthForm';
 import Arrowtothetop from './components/Arrowtothetop';
-import Nominees from './components/Homepage'; // Update the import statement
+import Nominees from './components/Homepage';
 import VoteCategory from './voting/VoteCategory';
 import UserAccountPage from './components/UserAccountPage';
 import AdminPage from './admin/AdminPage';
@@ -18,7 +18,7 @@ const ScrollToTop = () => {
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <Router> 
       <ScrollToTop />
       <Arrowtothetop />
       <Event>
@@ -32,7 +32,7 @@ const App = () => {
           </Routes>
         )}
       </Event>
-    </BrowserRouter>
+    </Router> 
   );
 };
 
