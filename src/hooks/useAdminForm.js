@@ -5,6 +5,7 @@ const useAdminForm = (initialEvent) => {
   const [eventData, setEventData] = useState({
     name: '',
     description: '',
+    eventType: 'voting', // Default to 'voting'
     categories: [],
   });
   const [events, setEvents] = useState([]);
@@ -84,7 +85,7 @@ const useAdminForm = (initialEvent) => {
   };
 
   const resetForm = () => {
-    setEventData({ name: '', description: '', categories: [] });
+    setEventData({ name: '', description: '', eventType: 'voting', categories: [] }); // Reset eventType to 'voting'
   };
 
   return {
