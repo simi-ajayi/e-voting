@@ -1,5 +1,5 @@
 import Hero from "./Hero"
-import Nominees from "./Nominees"
+import Nominees from "./Homepage"
 import SignOutButton from "./SignOutButton"
 
 

@@ -5,7 +5,7 @@ import useSignUp from '../hooks/useSignup';
 import useSignIn from '../hooks/useSignin';
 import UserAccountPage from './UserAccountPage';
 import Logo from '../assets/logo.png';
-import AdminPage from './AdminPage';
+import AdminPage from '../admin/AdminPage';
 
 const AuthForm = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -19,12 +19,21 @@ const AuthForm = () => {
     if (isSignUp) {
       const success = await handleSignUp();
       if (success) {
+        // Store the user data and token from the sign-up response
+        const { user, token } = success;
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', token);
         setIsAuthenticated(true);
       }
     } else {
-      const { isAdmin: admin } = await handleSignIn();
-      setIsAdmin(admin);
-      setIsAuthenticated(true);
+      const { token, user, isAdmin: admin } = await handleSignIn();
+      if (token && user) {
+        // Store the user data and token from the sign-in response
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', token);
+        setIsAdmin(admin);
+        setIsAuthenticated(true);
+      }
     }
   };
 

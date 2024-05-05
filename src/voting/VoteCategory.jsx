@@ -1,0 +1,260 @@
+import { useState, useMemo } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import Bg from '../assets/bg.jpeg';
+import Navbar from "../components/Navbar";
+import SignOutButton from "../components/SignOutButton";
+import { AiOutlineArrowLeft } from 'react-icons/ai';
+
+const VoteCategory = () => {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const title = searchParams.get("title");
+    const nomineeData = searchParams.get("nominees");
+
+    const nominees = useMemo(() => {
+        return nomineeData ? JSON.parse(decodeURIComponent(nomineeData)) : [];
+    }, [nomineeData]);
+
+    const [selectedVotes, setSelectedVotes] = useState(1);
+    const [selectedContestant, setSelectedContestant] = useState(null);
+    const [voterName, setVoterName] = useState("");
+    const [voterEmail, setVoterEmail] = useState("");
+    const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
+
+    const handleVoteChange = (e) => {
+        setSelectedVotes(parseInt(e.target.value));
+    };
+
+    const handleContestantChange = (e) => {
+        setSelectedContestant(e.target.value);
+    };
+
+    const handleVoterNameChange = (e) => {
+        setVoterName(e.target.value);
+    };
+
+    const handleVoterEmailChange = (e) => {
+        setVoterEmail(e.target.value);
+    };
+
+    const calculatePrice = () => {
+        const pricePerVote = 50;
+        return selectedVotes * pricePerVote;
+    };
+
+    const getContestantImage = () => {
+        const contestant = nominees.find((nominee) => nominee.name === selectedContestant);
+        return contestant ? contestant.imageUrl : "https://static.vecteezy.com/system/resources/previews/036/280/650/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg";
+    };
+
+    const handlePayment = async () => {
+        try {
+            const paymentData = {
+                voterName,
+                voterEmail,
+                amount: calculatePrice(),
+            };
+
+            // Make an API call to process the payment
+            const response = await axios.post("/api/payments", paymentData);
+
+            if (response.data.success) {
+                setIsPaymentSuccessful(true);
+                // Show a success message or redirect to a thank you page
+                alert("Payment successful! Your vote will now be submitted.");
+            } else {
+                // Show an error message to the user
+                alert("Payment failed. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error processing payment:", error);
+            // Show an error message to the user
+            alert("An error occurred while processing the payment. Please try again.");
+        }
+    };
+
+    const handleSubmitVote = async () => {
+        if (!isPaymentSuccessful) {
+            alert("Please complete the payment before submitting your vote.");
+            return;
+        }
+
+        try {
+            const voteData = {
+                voterName,
+                voterEmail,
+                contestant: selectedContestant,
+                votes: selectedVotes,
+                price: calculatePrice(),
+            };
+
+            // Make an API call to submit the vote
+            await axios.post("/api/votes", voteData);
+
+            // Clear form fields after successful submission
+            setSelectedContestant(null);
+            setSelectedVotes(1);
+            setVoterName("");
+            setVoterEmail("");
+            setIsPaymentSuccessful(false);
+
+            // Show a success message or redirect to a thank you page
+            alert("Your vote has been submitted successfully!");
+        } catch (error) {
+            console.error("Error submitting vote:", error);
+            // Show an error message to the user
+            alert("An error occurred while submitting your vote. Please try again.");
+        }
+    };
+
+    return (
+        <div>
+            <SignOutButton />
+            <Navbar />
+            <div className="w-full h-auto relative bg-white md:h-[1154px] font-[Poppins]">
+                <div className="top-[-449px]">
+                    <img
+                        className="w-full object-cover h-[69px] md:left-0 top-[-449px]"
+                        src={Bg}
+                        alt="Background Image"
+                    />
+                </div>
+                <div className="p-4">
+                    <div className="flex justify-center">
+                        <div className="w-full max-w-md mx-auto relative">
+                            <button
+                                className="absolute left-0 top-0 z-10 flex"
+                                onClick={() => navigate(-1)}
+                            >
+                                <AiOutlineArrowLeft className="text-gray-600 mr-1" size={20} /> Back
+                            </button>
+                            <div>
+                            <div className="mb-4">
+                               <div className="mt-8 ">
+                                    <label
+                                        htmlFor="voterName"
+                                        className="text-black text-sm font-light font-Poppins tracking-wide"
+                                    >
+                                        Name:
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="voterName"
+                                        className="w-full h-[40px] rounded-[10px] border border-black bg-white pl-4 pr-4 md:w-[355px] mt-2"
+                                        onChange={handleVoterNameChange}
+                                        value={voterName}
+                                        required
+                                        placeholder="Your name"
+                                    />
+                                </div>
+                                <div className="mt-4">
+                                    <label
+                                        htmlFor="voterEmail"
+                                        className="text-black text-sm font-light font-Poppins tracking-wide"
+                                    >
+                                        Email:
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="voterEmail"
+                                        className="w-full h-[40px] rounded-[10px] border border-black bg-white pl-4 pr-4 md:w-[355px] mt-2"
+                                        onChange={handleVoterEmailChange}
+                                        value={voterEmail}
+                                        required
+                                        placeholder="Your Email"
+                                    />
+                               </div>
+                                </div>
+                                <div className="text-black text-2xl font-semibold font-[Poppins] tracking-wide pt-8 md:pt-0 md:left-[32px] md:top-[120px] md:absolute">
+                                    {title || "Default Title"}
+                                </div>
+                                <div className="text-black text-xs font-normal font-Poppins tracking-wide mt-4 md:mt-0 md:left-[32px] md:top-[156px] md:absolute">
+                                    Vote for your favourite contestant
+                                </div>
+                                <label
+                                    htmlFor="contestant"
+                                    className="text-black text-sm font-light font-Poppins tracking-wide mt-4 md:mt-0 md:left-[48px] md:top-[221px] md:absolute"
+                                >
+                                    {/* Select Contestant */}
+                                </label>
+                                <div className="relative md:left-[48px] md:top-[245px] md:absolute">
+                                    <select
+                                        id="contestant"
+                                        className="w-full h-[40px] rounded-[10px] border border-black bg-white pl-12 pr-4 md:w-[355px]"
+                                        onChange={handleContestantChange}
+                                        value={selectedContestant}
+                                        defaultValue=""
+                                    >
+                                        <option value="" disabled>
+                                            Select Contestant
+                                        </option>
+                                        {nominees.map((nominee, index) => (
+                                            <option key={index} value={nominee.name}>
+                                                {nominee.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <div className="absolute left-[12px] top-[50%] transform -translate-y-1/2 pointer-events-none">
+                                        {/* {selectedContestant && (
+                                            <img
+                                                src={getContestantImage()}
+                                                alt={selectedContestant}
+                                                className="w-8 h-8 rounded-full mr-5"
+                                            />
+                                        )} */}
+                                    </div>
+                                </div>
+                                <img
+                                    className="md:w-[200px] md:h-[200px] w-[253px] h-[253px] mx-auto mt-4 rounded-md md:left-[108px] md:top-[289px] md:absolute"
+                                    src={getContestantImage()}
+                                    alt="Profile Picture"
+                                />
+                                <div className="text-black text-sm font-light font-Poppins tracking-wide mt-4 md:mt-0 md:left-[48px] md:top-[501px] md:absolute">
+                                    Number of Votes
+                                </div>
+                                <div className="relative md:left-[48px] md:top-[525px] md:absolute">
+                                    <input
+                                        type="number"
+                                        className="w-full h-[40px] rounded-[10px] border border-black bg-white pl-4 pr-4 md:w-[355px]"
+                                        onChange={handleVoteChange}
+                                        value={selectedVotes}
+                                        min={1}
+                                    />
+                                </div>
+                              
+                                <div className="flex-row flex w-full">
+                                    <div className="text-black text-sm font-light font-Poppins tracking-wide mt-4 md:mt-0 md:left-[57px] md:top-[576px] md:absolute">
+                                        Price
+                                    </div>
+                                    <div className="text-black text-sm font-light font-Poppins tracking-wide mt-4 md:mt-0 md:left-[359px] md:pl-0 pl-[250px] md:top-[576px] md:absolute">
+                                        ₦{calculatePrice()}
+                                    </div>
+                                </div>
+                                <div className="w-[186px] h-[38px] mx-auto mt-4 bg-yellow-600 rounded-[10px] shadow border border-none md:left-[122px] md:top-[593px] md:absolute">
+                                    <button
+                                        className="text-center text-white text-sm font-semibold font-Poppins tracking-wide pt-2 mx-auto w-full"
+                                        onClick={handlePayment}
+                                    >
+                                        Make Payment
+                                    </button>
+                                </div>
+                                <div className="w-[186px] h-[38px] mx-auto mt-4 bg-green-600 rounded-[10px] shadow border border-none md:left-[122px] md:top-[643px] md:absolute">
+                                    <button
+                                        className="text-center text-white text-sm font-semibold font-Poppins tracking-wide pt-2 mx-auto w-full"
+                                        onClick={handleSubmitVote}
+                                       
+                                    >
+                                        Submit Vote
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default VoteCategory;

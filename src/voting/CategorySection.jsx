@@ -1,16 +1,11 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-// Subcomponent for each nominee entry
 const NomineeEntry = ({ name, field, imageUrl }) => (
   <div className="flex flex-col items-center mb-4 md:mb-8">
     <div
       className="w-24 h-24 md:w-28 md:h-28 rounded-full border-2 border-none"
-      style={{
-        backgroundImage: `url(${imageUrl})`,
-        backgroundSize: "cover",
-        backgroundPosition: "",
-      }}
+      style={{ backgroundImage: `url(${imageUrl})`, backgroundSize: "cover" }}
     />
     <div className="mt-2">
       <div className="text-black text-sm font-medium tracking-wide">{name}</div>
@@ -19,14 +14,12 @@ const NomineeEntry = ({ name, field, imageUrl }) => (
   </div>
 );
 
-// Prop types for NomineeEntry component
 NomineeEntry.propTypes = {
   name: PropTypes.string.isRequired,
   field: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
 };
 
-// Component for each category section
 const CategorySection = ({ title, topPosition, nominees }) => (
   <div className={`w-full max-w-[374px] h-auto pt-4 pb-8 md:pt-8 md:pb-12 ${topPosition ? `md:top-[${topPosition}px]` : ''}`}>
     <div className="text-black text-base font-semibold tracking-wide mb-4 md:mb-6">{title}</div>
@@ -52,7 +45,6 @@ const CategorySection = ({ title, topPosition, nominees }) => (
   </div>
 );
 
-// Prop types for CategorySection component
 CategorySection.propTypes = {
   title: PropTypes.string.isRequired,
   topPosition: PropTypes.number,
