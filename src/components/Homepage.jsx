@@ -4,17 +4,6 @@ import SignOutButton from './SignOutButton';
 import Hero from './Hero';
 
 const Nominees = ({ eventData }) => {
-  // Check if eventData or categories are not present
-  if (!eventData || !eventData.categories || eventData.categories.length === 0) {
-    return (
-      <div>
-        <SignOutButton />
-        <Hero />
-        <div>No event data found.</div>
-      </div>
-    );
-  }
-
   // Dummy data for testing
   const dummyData = [
     {
@@ -44,7 +33,7 @@ const Nominees = ({ eventData }) => {
   ];
 
   // Use dummy data if eventData is not available
-  const categories = eventData.categories || dummyData;
+  const categories = eventData?.categories || dummyData;
 
   return (
     <div>
@@ -78,7 +67,7 @@ Nominees.propTypes = {
         ).isRequired
       }).isRequired
     ).isRequired
-  }).isRequired
+  })
 };
 
 export default Nominees;
