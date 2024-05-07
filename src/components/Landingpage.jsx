@@ -33,11 +33,14 @@ const LandingPage = () => {
           backgroundPosition: 'center',
         }}
       >
+             <div className=' md:w-[1300px] w-full md:pr-0 pr-4 text-right text-white pt-3'>Are you an organizer?<Link to='/auth'><span className=' text-gray-900 pl-1 animate-bounce'> Continue here</span></Link></div>
         <div className="bg-opacity-50 pt-24  px-4 md:px-0">
+   
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl md:text-4xl font-bold text-center mb-8 text-white">
               CRIBBERS AWARD VOTING SYSTEM
             </h1>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {events.map((event) => (
                 <div
