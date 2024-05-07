@@ -152,7 +152,7 @@ const VoteCategory = ({ eventId, onVoteSubmitted }) => {
                                         placeholder="Your name"
                                     />
                                 </div>
-                                <div className="mt-4">
+                                <div className="mt-6">
                                     <label
                                         htmlFor="voterEmail"
                                         className="text-black text-sm font-light font-Poppins tracking-wide"
@@ -170,7 +170,8 @@ const VoteCategory = ({ eventId, onVoteSubmitted }) => {
                                     />
                                </div>
                                 </div>
-                                <div className="text-black text-2xl font-semibold font-[Poppins] tracking-wide pt-8 md:pt-0 md:left-[32px] md:top-[120px] md:absolute">
+                               <div className=" relative">
+                               <div className="text-black text-2xl font-semibold font-[Poppins] tracking-wide pt-8 md:pt-0 md:left-[32px] md:top-[120px] md:absolute">
                                     {title || "Default Title"}
                                 </div>
                                 <div className="text-black text-xs font-normal font-Poppins tracking-wide mt-4 md:mt-0 md:left-[32px] md:top-[156px] md:absolute">
@@ -252,6 +253,7 @@ const VoteCategory = ({ eventId, onVoteSubmitted }) => {
                                         Submit Vote
                                     </button>
                                 </div>
+                               </div>
                             </div>
                         </div>
                     </div>
@@ -262,8 +264,8 @@ const VoteCategory = ({ eventId, onVoteSubmitted }) => {
 };
 
 VoteCategory.propTypes = {
-  eventId: PropTypes.string.isRequired,
-  onVoteSubmitted: PropTypes.func.isRequired,
+  eventId: PropTypes.string,
+  onVoteSubmitted: PropTypes.func,
 };
 
 export default VoteCategory;

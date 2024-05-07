@@ -7,7 +7,7 @@ const SignOutButton = () => {
     // Perform sign-out logic here
     // For example, clear authentication state or tokens
     // After sign-out, navigate to the authentication page or home page
-    navigate('/'); // Navigate to the authentication page
+    navigate('/auth'); // Navigate to the authentication page
   };
 
   return (

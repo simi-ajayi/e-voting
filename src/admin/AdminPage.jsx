@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import AdminForm from './AdminForm';
 import backgroundImage from '../assets/thumb.jpg';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const AdminPage = () => {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(null);
-  const [expandedEventId, setExpandedEventId] = useState(null);
+  const [expandedEventId] = useState(null);
 
   useEffect(() => {
     fetchEvents();
@@ -17,8 +17,12 @@ const AdminPage = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('/api/events');
-      setEvents(response.data);
+      const response = await axios.get('https://events.thecribbers.ng/api/users/events');
+      if (response.data.status && response.data.statusCode === 200) {
+        setEvents(response.data.data);
+      } else {
+        console.error('Failed to fetch events:', response.data.message);
+      }
     } catch (error) {
       console.error('Error fetching events:', error);
     }
@@ -26,24 +30,31 @@ const AdminPage = () => {
 
   const handleCreateEvent = async (eventData) => {
     try {
-      const response = await axios.post('/api/events', eventData);
-      setEvents([...events, response.data]);
+      const newEvent = {
+        ...eventData,
+        id: Date.now(),
+        votes: [],
+        nominees: [],
+      };
+
+      const response = await axios.post('https://events.thecribbers.ng/api/users/create-event', newEvent);
+
+      if (response.status === 200) {
+        setEvents([...events, newEvent]);
+      } else {
+        console.error('Failed to create event:', response.data);
+      }
     } catch (error) {
       console.error('Error creating event:', error);
     }
   };
 
-  const handleUpdateEvent = async (updatedEventData) => {
-    try {
-      const response = await axios.put(`/api/events/${selectedEvent.id}`, updatedEventData);
-      const updatedEvents = events.map((event) =>
-        event.id === selectedEvent.id ? response.data : event
-      );
-      setEvents(updatedEvents);
-      setSelectedEvent(null);
-    } catch (error) {
-      console.error('Error updating event:', error);
-    }
+  const handleUpdateEvent = (updatedEventData) => {
+    const updatedEvents = events.map((event) =>
+      event.id === selectedEvent.id ? { ...event, ...updatedEventData } : event
+    );
+    setEvents(updatedEvents);
+    setSelectedEvent(null);
   };
 
   const handleDeleteConfirmation = (eventId) => {
@@ -54,22 +65,15 @@ const AdminPage = () => {
     setDeleteConfirmationModal(null);
   };
 
-  const handleDeleteEvent = async () => {
-    try {
-      await axios.delete(`/api/events/${deleteConfirmationModal}`);
-      const updatedEvents = events.filter((event) => event.id !== deleteConfirmationModal);
-      setEvents(updatedEvents);
-      setDeleteConfirmationModal(null);
-    } catch (error) {
-      console.error('Error deleting event:', error);
-    }
+  const handleDeleteEvent = () => {
+    const updatedEvents = events.filter((event) => event.id !== deleteConfirmationModal);
+    setEvents(updatedEvents);
+    setDeleteConfirmationModal(null);
   };
 
   const handleSignOut = () => {
     const confirmed = window.confirm('Are you sure you want to sign out?');
     if (confirmed) {
-      // Perform sign-out actions, such as clearing user data or logging out
-      // Redirect the user to the homepage after sign-out
       window.location.href = '/';
     }
   };
@@ -79,23 +83,14 @@ const AdminPage = () => {
   };
 
   const handleToggleExpand = (eventId) => {
-    if (expandedEventId === eventId) {
-      setExpandedEventId(null);
-    } else {
-      setExpandedEventId(eventId);
-    }
+    navigate(`/view-votes/${eventId}`);
   };
 
-  const handleAddNominee = async (eventId, nominee) => {
-    try {
-      const response = await axios.post(`/api/events/${eventId}/nominees`, nominee);
-      const updatedEvents = events.map((event) =>
-        event.id === eventId ? { ...event, nominees: [...event.nominees, response.data] } : event
-      );
-      setEvents(updatedEvents);
-    } catch (error) {
-      console.error('Error adding nominee:', error);
-    }
+  const handleAddNominee = (eventId, nominee) => {
+    const updatedEvents = events.map((event) =>
+      event.id === eventId ? { ...event, nominees: [...event.nominees, nominee] } : event
+    );
+    setEvents(updatedEvents);
   };
 
   return (
@@ -119,25 +114,26 @@ const AdminPage = () => {
                     <li key={event.id} className="bg-white shadow-3xl md:w-[400px] w-full rounded-[35px] opacity-90 p-5 mb-4">
                       <div className="flex justify-between items-center">
                         <div>
-                          <h3 className="text-lg font-semibold">{event.name}</h3>
+                          <h3 className="text-lg font-semibold">{event.title}</h3>
                           <p className="text-gray-600">{event.description}</p>
-                          <p className="text-gray-600">Organizer(s): {event.assignedUser}</p>
+                          <p className="text-gray-600">Start Date: {event.start_date}</p>
+                          <p className="text-gray-600">End Date: {event.end_date}</p>
                           <button
-                            onClick={() => handleViewEvent(event.id)}
+                            onClick={() => handleViewEvent(event.event_id)}
                             className="text-blue-500 hover:underline mt-4 block text-center"
                           >
                             View Event
                           </button>
                           <button
-                            onClick={() => handleToggleExpand(event.id)}
+                            onClick={() => handleToggleExpand(event.event_id)}
                             className="text-blue-500 hover:underline mt-2 block text-center"
                           >
-                            {expandedEventId === event.id ? 'Collapse Votes' : 'Expand Votes'}
+                            {expandedEventId === event.event_id ? 'Collapse Votes' : 'View Votes'}
                           </button>
-                          {expandedEventId === event.id && (
+                          {expandedEventId === event.event_id && (
                             <div className="mt-4">
                               <h4 className="text-lg font-semibold">Votes:</h4>
-                              {event.votes.length > 0 ? (
+                              {event.votes && event.votes.length > 0 ? (
                                 <ul>
                                   {event.votes.map((vote, index) => (
                                     <li key={index}>

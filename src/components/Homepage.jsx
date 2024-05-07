@@ -39,7 +39,7 @@ const Nominees = ({ eventData }) => {
     <div>
       <SignOutButton />
       <Hero />
-      <div className="container mx-auto px-4 pt-[200px] md:pt-[400px]">
+      <div className="container mx-auto w-full px-4 pt-[200px] md:pt-[100px]">
         <div className="md:mx-[33.3%]">
           <div className="text-black text-xl font-semibold tracking-wide mb-2">Meet Our Nominees</div>
           <div className="text-black text-sm font-normal tracking-wide">Get to know our Prominent Nominees</div>

@@ -1,132 +1,74 @@
+// useAdminForm.js
 import { useState, useEffect } from 'react';
 
-const useAdminForm = (event) => {
+const useAdminForm = (initialEvent) => {
   const [eventData, setEventData] = useState({
-    name: event ? event.name : '',
-    description: event ? event.description : '',
-    eventType: event ? event.eventType : 'voting',
-    categories: event ? event.categories : [],
-    assignedUser: event ? event.assignedUser : '',
+    name: '',
+    description: '',
+    startDate: '',
+    endDate: '',
+    organizers: [],
+    eventType: 'voting',
+    categories: [],
   });
 
   useEffect(() => {
-    setEventData({
-      name: event ? event.name : '',
-      description: event ? event.description : '',
-      eventType: event ? event.eventType : 'voting',
-      categories: event ? event.categories : [],
-      assignedUser: event ? event.assignedUser : '',
-    });
-  }, [event]);
+    if (initialEvent) {
+      setEventData(initialEvent);
+    }
+  }, [initialEvent]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEventData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    const { name, value, type, files } = e.target;
+
+    if (type === 'file') {
+      // Handle file upload
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setEventData({ ...eventData, [name]: reader.result });
+      };
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    } else {
+      // Handle other input types
+      setEventData({ ...eventData, [name]: value });
+    }
   };
 
   const handleAddCategory = () => {
-    setEventData((prevState) => ({
-      ...prevState,
-      categories: [...prevState.categories, { name: '', nominees: [] }],
-    }));
+    setEventData({
+      ...eventData,
+      categories: [...eventData.categories, { name: '', nominees: [] }],
+    });
   };
 
   const handleAddNominee = (categoryIndex) => {
-    setEventData((prevState) => {
-      const updatedCategories = prevState.categories.map((category, index) => {
-        if (index === categoryIndex) {
-          return {
-            ...category,
-            nominees: [...category.nominees, { name: '', imageUrl: '' }],
-          };
-        }
-        return category;
-      });
-      return {
-        ...prevState,
-        categories: updatedCategories,
-      };
-    });
+    const updatedCategories = [...eventData.categories];
+    updatedCategories[categoryIndex].nominees.push({ name: '', imageUrl: '' });
+    setEventData({ ...eventData, categories: updatedCategories });
   };
 
   const handleCategoryNameChange = (e, categoryIndex) => {
-    const { value } = e.target;
-    setEventData((prevState) => {
-      const updatedCategories = prevState.categories.map((category, index) => {
-        if (index === categoryIndex) {
-          return {
-            ...category,
-            name: value,
-          };
-        }
-        return category;
-      });
-      return {
-        ...prevState,
-        categories: updatedCategories,
-      };
-    });
+    const updatedCategories = [...eventData.categories];
+    updatedCategories[categoryIndex].name = e.target.value;
+    setEventData({ ...eventData, categories: updatedCategories });
   };
 
   const handleNomineeChange = (e, categoryIndex, nomineeIndex) => {
-    const { name, value } = e.target;
-    setEventData((prevState) => {
-      const updatedCategories = prevState.categories.map((category, cIndex) => {
-        if (cIndex === categoryIndex) {
-          const updatedNominees = category.nominees.map((nominee, nIndex) => {
-            if (nIndex === nomineeIndex) {
-              return {
-                ...nominee,
-                [name]: value,
-              };
-            }
-            return nominee;
-          });
-          return {
-            ...category,
-            nominees: updatedNominees,
-          };
-        }
-        return category;
-      });
-      return {
-        ...prevState,
-        categories: updatedCategories,
-      };
-    });
+    const updatedCategories = [...eventData.categories];
+    updatedCategories[categoryIndex].nominees[nomineeIndex][e.target.name] = e.target.value;
+    setEventData({ ...eventData, categories: updatedCategories });
   };
 
   const handleImageUpload = (e, categoryIndex, nomineeIndex) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-    reader.onload = () => {
-      setEventData((prevState) => {
-        const updatedCategories = prevState.categories.map((category, cIndex) => {
-          if (cIndex === categoryIndex) {
-            const updatedNominees = category.nominees.map((nominee, nIndex) => {
-              if (nIndex === nomineeIndex) {
-                return {
-                  ...nominee,
-                  imageUrl: reader.result,
-                };
-              }
-              return nominee;
-            });
-            return {
-              ...category,
-              nominees: updatedNominees,
-            };
-          }
-          return category;
-        });
-        return {
-          ...prevState,
-          categories: updatedCategories,
-        };
-      });
+    reader.onloadend = () => {
+      const updatedCategories = [...eventData.categories];
+      updatedCategories[categoryIndex].nominees[nomineeIndex].imageUrl = reader.result;
+      setEventData({ ...eventData, categories: updatedCategories });
     };
     if (file) {
       reader.readAsDataURL(file);
@@ -137,9 +79,11 @@ const useAdminForm = (event) => {
     setEventData({
       name: '',
       description: '',
+      startDate: '',
+      endDate: '',
+      organizers: [],
       eventType: 'voting',
       categories: [],
-      assignedUser: '',
     });
   };
 

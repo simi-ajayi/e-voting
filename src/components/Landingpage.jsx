@@ -1,6 +1,6 @@
 // EVotingPage.js
 import { Link } from 'react-router-dom';
-import SignOutButton from './SignOutButton';
+// import SignOutButton from './SignOutButton';
 import backgroundImage from '../assets/thumb.jpg';
 
 const EVotingPage = ({ events, currentUser }) => {
@@ -8,7 +8,7 @@ const EVotingPage = ({ events, currentUser }) => {
 
   return (
     <div className='font-[inter]'>
-      <SignOutButton />
+      {/* <SignOutButton /> */}
       <div
         className="relative min-h-screen"
         style={{
