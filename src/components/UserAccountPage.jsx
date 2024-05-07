@@ -1,9 +1,29 @@
 // EVotingPage.js
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import SignOutButton from './SignOutButton';
 import backgroundImage from '../assets/thumb.jpg';
+import PropTypes from 'prop-types';
 
-const EVotingPage = ({ events, currentUser }) => {
+const UserAccountPage = ({ currentUser }) => {
+  const [events, setEvents] = useState([]);
+  const [searchParams] = useSearchParams();
+  const UserId = searchParams.get('UserId');
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(`https://events.thecribbers.ng/api/users/events/organizers/${UserId}`);
+        const data = await response.json();
+        setEvents(data);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetchEvents();
+  }, [UserId]);
+
   const filteredEvents = events.filter((event) => event.assignedUser === currentUser);
 
   return (
@@ -33,7 +53,9 @@ const EVotingPage = ({ events, currentUser }) => {
                     <p className="text-gray-700 mb-4">{event.description}</p>
                   </div>
                   <Link
-                    to={`/votecategory?eventId=${event.id}&title=${encodeURIComponent(event.name)}&nominees=${encodeURIComponent(JSON.stringify(event.nominees))}`}
+                    to={`/votecategory?eventId=${event.id}&title=${encodeURIComponent(
+                      event.name
+                    )}&nominees=${encodeURIComponent(JSON.stringify(event.nominees))}`}
                     className={`bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg inline-block text-center ${
                       index === 0 ? 'animate-bounce' : ''
                     }`}
@@ -50,4 +72,8 @@ const EVotingPage = ({ events, currentUser }) => {
   );
 };
 
-export default EVotingPage;
+UserAccountPage.propTypes = {
+  currentUser: PropTypes.string.isRequired, // currentUser is a required string
+};
+
+export default UserAccountPage;

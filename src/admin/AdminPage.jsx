@@ -36,9 +36,9 @@ const AdminPage = () => {
         votes: [],
         nominees: [],
       };
-
+  
       const response = await axios.post('https://events.thecribbers.ng/api/users/create-event', newEvent);
-
+  
       if (response.status === 200) {
         setEvents([...events, newEvent]);
       } else {

@@ -19,7 +19,6 @@ const AuthForm = () => {
     if (isSignUp) {
       const success = await handleSignUp();
       if (success) {
-        // Store the user data and token from the sign-up response
         const { user, token } = success;
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('token', token);
@@ -28,15 +27,16 @@ const AuthForm = () => {
     } else {
       const { token, user, isAdmin: admin } = await handleSignIn();
       if (token && user) {
-        // Store the user data and token from the sign-in response
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('token', token);
         setIsAdmin(admin);
         setIsAuthenticated(true);
+        if (!admin) {
+          return <Navigate to={`/account/${user.id}`} />;
+        }
       }
     }
   };
-
   const handleToggleForm = () => {
     setIsSignUp(!isSignUp);
   };

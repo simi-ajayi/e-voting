@@ -36,25 +36,35 @@ const AdminForm = ({ event, onSubmit }) => {
     fetchUsers();
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+const handleSubmit = (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
 
-    const eventData = {
-      title: eventData.title,
-      description: eventData.description,
-      startDate: eventData.startDate,
-      endDate: eventData.endDate,
-      organizers: eventData.organizers,
-      eventType: eventData.eventType,
-    };
+  const newEventData = {
+    title: eventData.name,
+    description: eventData.description,
+    startDate: eventData.startDate,
+    endDate: eventData.endDate,
+    organizers: eventData.users,
+    eventType: eventData.eventType,
+    // categories: eventData.categories,
+  };
 
-    onSubmit(eventData).finally(() => {
+  onSubmit(newEventData)
+    .then((response) => {
+      // Handle successful response
+      console.log('Event created successfully:', response);
+    })
+    .catch((error) => {
+      // Handle error
+      console.error('Failed to create event:', error);
+    })
+    .finally(() => {
       setIsSubmitting(false);
       resetForm();
     });
-  };
-  
+};
+
 
   return (
     <form onSubmit={handleSubmit} className="bg-white shadow-3xl rounded-[35px] opacity-90 p-7 flex flex-col justify-between">
@@ -71,8 +81,8 @@ const AdminForm = ({ event, onSubmit }) => {
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md py-2 px-3 mt-1 mb-4"
           >
-            <option key="voting" value="voting">Voting Event</option>
-            <option key="ticket" value="ticketing" disabled>Ticketing Event</option>
+            <option value="voting">Voting Event</option>
+            <option value="ticketing" disabled>Ticketing Event</option>
           </select>
         </div>
         <div>
@@ -95,7 +105,8 @@ const AdminForm = ({ event, onSubmit }) => {
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md py-2 px-3 mt-1 mb-4"
           />
-        </div>  <div>
+        </div>
+        <div>
           <label htmlFor="startDate" className="text-gray-700">Start Date:</label>
           <input
             type="text"
@@ -122,64 +133,63 @@ const AdminForm = ({ event, onSubmit }) => {
         <div>
           <label htmlFor="organizers" className="text-gray-700">Select Organizers:</label>
           <select
-      id="organizers"
-      name="users"
-      value={eventData.users}
-      onChange={handleChange}
-      className="w-full border border-gray-300 rounded-md py-2 px-3 mt-1 mb-4 appearance-none"
-    >
-      <option key="default" value="select">Select Organizers</option>
-      {Array.isArray(users) &&
-        users.map((user) => (
-          <option key={user.id} value={user.id}>
-            {user.username}
-          </option>
-        ))}
-    </select>
-
+            id="organizers"
+            name="users"
+            value={eventData.users}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded-md py-2 px-3 mt-1 mb-4 appearance-none"
+          >
+            <option value="">Select Organizers</option>
+            {Array.isArray(users) &&
+              users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.username}
+                </option>
+              ))}
+          </select>
         </div>
         {event && eventData.eventType === 'voting' && (
           <button type="button" onClick={handleAddCategory} className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 my-2 px-4 rounded-lg mt-4">
             Add Voting Category
           </button>
         )}
-       {eventData.categories.map((category, categoryIndex) => (
-  <div key={categoryIndex} className="mt-4 border-t border-gray-300 pt-4">
-    <input
-      type="text"
-      value={category.name}
-      onChange={(e) => handleCategoryNameChange(e, categoryIndex)}
-      className="w-full border border-gray-300 rounded-md py-2 px-3 mb-4"
-      placeholder="Category Name"
-    />
-    <button
-      type="button"
-      onClick={() => handleAddNominee(categoryIndex)}
-      className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg mb-2"
-    >
-      Add Nominee
-    </button>
-    {category.nominees.map((nominee, nomineeIndex) => (
-      <div key={nomineeIndex} className="flex items-center mt-2">
-        <input
-          type="text"
-          name="name"
-          value={nominee.name}
-          onChange={(e) => handleNomineeChange(e, categoryIndex, nomineeIndex)}
-          className="flex-1 border border-gray-300 rounded-md py-2 px-3 mr-2"
-          placeholder="Nominee Name"
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => handleImageUpload(e, categoryIndex, nomineeIndex)}
-          className="border border-gray-300 rounded-md py-2 px-3 mr-2"
-        />
-        <img src={nominee.imageUrl} alt="Nominee" className="h-10 w-10 rounded-full object-cover" />
-      </div>
-    ))}
-  </div>
-))}
+        {eventData.categories.map((category, categoryIndex) => (
+          <div key={categoryIndex} className="mt-4 border-t border-gray-300 pt-4">
+            <input
+              type="text"
+              value={category.name}
+              onChange={(e) => handleCategoryNameChange(e, categoryIndex)}
+              className="w-full border border-gray-300 rounded-md py-2 px-3 mb-4"
+              placeholder="Category Name"
+            />
+            <button
+              type="button"
+              onClick={() => handleAddNominee(categoryIndex)}
+              className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg mb-2"
+            >
+              Add Nominee
+            </button>
+            {category.nominees.map((nominee, nomineeIndex) => (
+              <div key={nomineeIndex} className="flex items-center mt-2">
+                <input
+                  type="text"
+                  name="name"
+                  value={nominee.name}
+                  onChange={(e) => handleNomineeChange(e, categoryIndex, nomineeIndex)}
+                  className="flex-1 border border-gray-300 rounded-md py-2 px-3 mr-2"
+                  placeholder="Nominee Name"
+                />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageUpload(e, categoryIndex, nomineeIndex)}
+                  className="border border-gray-300 rounded-md py-2 px-3 mr-2"
+                />
+                <img src={nominee.imageUrl} alt="Nominee" className="h-10 w-10 rounded-full object-cover" />
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
       <button
         type="submit"
@@ -192,7 +202,7 @@ const AdminForm = ({ event, onSubmit }) => {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-           
+            Submitting...
           </>
         ) : (
           event ? 'Update Event' : 'Create Event'

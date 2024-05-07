@@ -29,9 +29,9 @@ const App = () => {
             <Route path="/auth/*" element={<AuthForm setEvents={setEvents} />} />
             <Route path="/home/:eventId" element={<Nominees events={events} />} />
             <Route path="/votecategory" element={<VoteCategory />} />
-            <Route path="/account" element={<UserAccountPage events={events} />} />
+            <Route path="/account/" element={<UserAccountPage />} />
             <Route path="/admin" element={<AdminPage events={events} setEvents={setEvents} />} />
-            <Route path="/*" element={<Landingpage events={events} />} />
+            <Route path="/" element={<Landingpage  />} />
             <Route path="/view-votes/:eventId" element={<ViewVotesPage events={events} />} />
           </Routes>
         )}

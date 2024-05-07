@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 const useAdminForm = (initialEvent) => {
   const [eventData, setEventData] = useState({
-    name: '',
+    title: '',
     description: '',
     startDate: '',
     endDate: '',
@@ -22,7 +22,7 @@ const useAdminForm = (initialEvent) => {
     const { name, value, type, files } = e.target;
 
     if (type === 'file') {
-      // Handle file upload
+      
       const file = files[0];
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -32,7 +32,7 @@ const useAdminForm = (initialEvent) => {
         reader.readAsDataURL(file);
       }
     } else {
-      // Handle other input types
+      
       setEventData({ ...eventData, [name]: value });
     }
   };
