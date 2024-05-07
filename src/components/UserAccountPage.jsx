@@ -8,12 +8,12 @@ import PropTypes from 'prop-types';
 const UserAccountPage = ({ currentUser }) => {
   const [events, setEvents] = useState([]);
   const [searchParams] = useSearchParams();
-  const UserId = searchParams.get('UserId');
+  const adminUserId = searchParams.get('adminUserId');
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch(`https://events.thecribbers.ng/api/users/events/organizers/${UserId}`);
+        const response = await fetch(`https://events.thecribbers.ng/api/users/events/organizers/${adminUserId}`);
         const data = await response.json();
         setEvents(data);
       } catch (error) {
@@ -22,7 +22,7 @@ const UserAccountPage = ({ currentUser }) => {
     };
 
     fetchEvents();
-  }, [UserId]);
+  }, [adminUserId]);
 
   const filteredEvents = events.filter((event) => event.assignedUser === currentUser);
 

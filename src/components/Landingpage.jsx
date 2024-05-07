@@ -42,7 +42,7 @@ const LandingPage = () => {
               {events.map((event) => (
                 <div
                   key={event.id}
-                  className="bg-white shadow-3xl rounded-[35px] opacity-90 p-7 flex flex-col justify-between"
+                  className="bg-white shadow-3xl border border-gray-500 rounded-[35px] opacity-90 p-7 flex flex-col justify-between"
                 >
                   <div>
                     <h2 className="text-xl font-semibold mb-4">{event.title}</h2>
