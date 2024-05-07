@@ -39,7 +39,7 @@ const AdminPage = () => {
   
       const response = await axios.post('https://events.thecribbers.ng/api/users/create-event', newEvent);
   
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         setEvents([...events, newEvent]);
       } else {
         console.error('Failed to create event:', response.data);

@@ -12,7 +12,6 @@ const AuthForm = () => {
   const { signUpData, handleSignUpChange, handleSignUp, error: signUpError, isLoading: isSignUpLoading } = useSignUp();
   const { signInData, handleSignInChange, handleSignIn, error: signInError, isLoading: isSignInLoading } = useSignIn();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,18 +24,16 @@ const AuthForm = () => {
         setIsAuthenticated(true);
       }
     } else {
-      const { token, user, isAdmin: admin } = await handleSignIn();
+      const { token, user } = await handleSignIn();
       if (token && user) {
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('token', token);
-        setIsAdmin(admin);
         setIsAuthenticated(true);
-        if (!admin) {
-          return <Navigate to={`/account/${user.id}`} />;
-        }
+        return <Navigate to={`/account?userId=${user.user_id}`} />;
       }
     }
   };
+
   const handleToggleForm = () => {
     setIsSignUp(!isSignUp);
   };
@@ -47,11 +44,10 @@ const AuthForm = () => {
         path="/"
         element={
           isAuthenticated ? (
-            isAdmin ? (
-              <Navigate to="/admin" />
-            ) : (
+            
+              
               <Navigate to="/account" />
-            )
+            
           ) : (
             <div className="flex flex-col md:flex-row h-screen">
               <div className="w-full py-52 md:py-8 md:w-1/2 bg-gray-100 flex justify-center items-center relative">
@@ -184,11 +180,11 @@ const AuthForm = () => {
       />
       <Route
         path="/account"
-        element={isAuthenticated && !isAdmin ? <UserAccountPage /> : <Navigate to="/" />}
+        element={isAuthenticated ? <UserAccountPage /> : <Navigate to="/" />}
       />
       <Route
         path="/admin"
-        element={isAuthenticated && isAdmin ? <AdminPage /> : <Navigate to="/" />}
+        element={isAuthenticated ? <AdminPage /> : <Navigate to="/" />}
       />
     </Routes>
   );

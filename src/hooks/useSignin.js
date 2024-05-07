@@ -32,6 +32,10 @@
     
             // Store the token in local storage or a state management solution
             localStorage.setItem('token', token);
+            localStorage.setItem('adminId', response.data.data.user.user_id);
+
+            console.log(response.data.data.user.user_id)
+
     
             // Set the user and authentication state
             setUser(user);
