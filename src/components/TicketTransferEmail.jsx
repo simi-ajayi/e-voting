@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Logo from '../assets/01109bff281a56a092c510b01cf687926cc992b5.png';
 import Received from '../assets/download.png';
@@ -33,11 +34,11 @@ const TicketTransferEmail = () => {
                 </div>
 
                 {/* Connecting Line */}
-                <div style={{
+                {/* <div style={{
                   position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  width: '100%',
+                  top: '30%',
+                  left: '44%',
+                  width: '79%',
                   height: '2px',
                   backgroundColor: '#cccccc',
                   transform: 'translateX(-50%)',
@@ -45,7 +46,7 @@ const TicketTransferEmail = () => {
                   // Adjust the width between steps
                   marginLeft: '20px',
                   marginRight: '20px'
-                }}></div>
+                }}></div> */}
 
                 {/* Step 2: Accepted */}
                 <div style={{ textAlign: 'center', position: 'relative' }}>
@@ -56,9 +57,9 @@ const TicketTransferEmail = () => {
                 </div>
 
                 {/* Connecting Line */}
-                <div style={{
+                {/* <div style={{
                   position: 'absolute',
-                  top: '50%',
+                  top: '30%',
                   left: '50%',
                   width: '100%',
                   height: '2px',
@@ -67,7 +68,7 @@ const TicketTransferEmail = () => {
                   zIndex: 0,
                   marginLeft: '20px',
                   marginRight: '20px'
-                }}></div>
+                }}></div> */}
 
                 {/* Step 3: Complete */}
                 <div style={{ textAlign: 'center', position: 'relative' }}>
@@ -108,26 +109,28 @@ const TicketTransferEmail = () => {
           </div>
         </div>
 
-        <div style={{ backgroundColor: '#0046bf', color: '#ffffff', padding: '40px 0', textAlign: 'center', fontSize: '14px', margin: 'auto' }}>
-          <div>Stay Connected</div>
-          <div style={{ marginBottom: '20px', display:'flex', textAlign:'center', marginTop: '20px', marginInline:'120px' }}>
-            <a href="#"><img src={FB} alt="Facebook" style={{ width: '24px', margin: '10px 10px', verticalAlign: 'middle' }} /></a>
-            <a href="#"><img src={IG} alt="Instagram" style={{ width: '24px', margin: '10px 10px', verticalAlign: 'middle' }} /></a>
-            <a href="#"><img src={X} alt="Cross Icon" style={{ width: '24px', margin: '10px 10px', verticalAlign: 'middle' }} /></a>
-            <a href="#"><img src={YT} alt="YouTube" style={{ width: '24px', margin: '10px 10px', verticalAlign: 'middle' }} /></a>
-          </div>
 
-          <div style={{ margin: '20px 0' }}>
-            <a href="#" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>Ticketmaster</a> |
-            <a href="#" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>About</a> |
-            <a href="#" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>Terms of Use</a> |
-            <a href="#" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>Privacy</a>
-          </div>
-          <div style={{ margin: '10px 0', color: '#cccccc' }}>
-            355 Sainte-Catherine West Street, Suite 601, Montreal, Quebec, H3B 1A5
-          </div>
-          <div>&copy; 2024 Ticketmaster. All rights reserved.</div>
-        </div>
+        <div style={{ backgroundColor: '#0046bf', color: '#ffffff', padding: '40px 0', textAlign: 'center', fontSize: '14px', margin: 'auto' }}>
+  <div>Stay Connected</div>
+  <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px', gap: '10px' }}>
+    <a href="#"><img src={FB} alt="Facebook" style={{ width: '24px', verticalAlign: 'middle' }} /></a>
+    <a href="#"><img src={IG} alt="Instagram" style={{ width: '24px', verticalAlign: 'middle' }} /></a>
+    <a href="#"><img src={X} alt="Cross Icon" style={{ width: '24px', verticalAlign: 'middle' }} /></a>
+    <a href="#"><img src={YT} alt="YouTube" style={{ width: '24px', verticalAlign: 'middle' }} /></a>
+  </div>
+
+  <div style={{ margin: '20px 0' }}>
+    <a href="#" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>Ticketmaster</a> |
+    <a href="#" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>About</a> |
+    <a href="#" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>Terms of Use</a> |
+    <a href="#" style={{ margin: '0 15px', color: 'white', textDecoration: 'none' }}>Privacy</a>
+  </div>
+  <div style={{ margin: '10px 0', color: '#cccccc' }}>
+    355 Sainte-Catherine West Street, Suite 601, Montreal, Quebec, H3B 1A5
+  </div>
+  <div>&copy; 2024 Ticketmaster. All rights reserved.</div>
+</div>
+
       </div>
     </div>
   );
