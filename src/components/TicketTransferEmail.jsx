@@ -1,11 +1,11 @@
-import Logo from '../assets/01109bff281a56a092c510b01cf687926cc992b5.svg';
+import Logo from '../assets/01109bff281a56a092c510b01cf687926cc992b5.png';
 import Received from '../assets/download.png'
 import Receivedd from '../assets/download (1).png'
 import Main from '../assets/images.jpeg'
-import FB from '../assets/facebook.svg'
-import IG from '../assets/instagram.svg'
-import X from '../assets/x.svg'
-import YT from '../assets/youtube.svg'
+import FB from '../assets/facebook.png'
+import IG from '../assets/instagram.png'
+import X from '../assets/x.png'
+import YT from '../assets/youtube.png'
 
 const TicketTransferEmail = () => {
   return (
