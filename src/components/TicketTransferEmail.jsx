@@ -1,11 +1,18 @@
-import React from 'react';
+import Logo from '../assets/01109bff281a56a092c510b01cf687926cc992b5.svg';
+import Received from '../assets/download.png'
+import Receivedd from '../assets/download (1).png'
+import Main from '../assets/images.jpeg'
+import FB from '../assets/facebook.svg'
+import IG from '../assets/instagram.svg'
+import X from '../assets/x.svg'
+import YT from '../assets/youtube.svg'
 
 const TicketTransferEmail = () => {
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: '#ffffff', margin: 0, padding: 0, textAlign: 'center' }}>
       <div style={{ width: '100%', maxWidth: '600px', margin: '0 auto', padding: 0, backgroundColor: '#ffffff' }}>
         <div style={{ backgroundColor: '#0046bf', padding: '20px', color: '#ffffff', fontSize: '20px', fontWeight: 'bold' }}>
-          <img src="https://help.ticketmaster.com/hc/theming_assets/01HZPHTRF2QNK3E35HQ2RV1T01" alt="Ticketmaster Logo" />
+          <img src={Logo} alt="Ticketmaster Logo" />
         </div>
 
         <div style={{ padding: '20px', color: '#4B5158', fontSize: '20px', fontWeight: 'bold' }}>
@@ -17,17 +24,17 @@ const TicketTransferEmail = () => {
             <div style={{ content: '""', position: 'absolute', top: '30%', left: '12.5%', right: '12.5%', height: '2px', backgroundColor: '#cccccc', zIndex: 0 }}></div>
 
             <div style={{ flex: 1, textAlign: 'center', position: 'relative', zIndex: 1 }}>
-              <img src="https://img.icons8.com/?size=100&id=18638&format=png&color=CCCCCC" alt="Received" style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px dashed #0046bf', padding: '10px', backgroundColor: '#0046bf' }} />
+              <img src={Received} alt="Received" style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px dashed #0046bf', padding: '10px', backgroundColor: '#0046bf' }} />
               <p style={{ marginTop: '10px', fontSize: '14px', color: '#0046bf' }}>Received</p>
             </div>
 
             <div style={{ flex: 1, textAlign: 'center', position: 'relative', zIndex: 1 }}>
-              <img src="https://img.icons8.com/?size=100&id=11658&format=png&color=CCCCCC" alt="Accepted" style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px dashed #cccccc', padding: '10px', backgroundColor: '#ffffff' }} />
+              <img src={Receivedd} alt="Accepted" style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px dashed #cccccc', padding: '10px', backgroundColor: '#ffffff' }} />
               <p style={{ marginTop: '10px', fontSize: '14px', color: '#cccccc' }}>Accepted</p>
             </div>
 
             <div style={{ flex: 1, textAlign: 'center', position: 'relative', zIndex: 1 }}>
-              <img src="https://img.icons8.com/?size=100&id=18638&format=png&color=CCCCCC" alt="Complete" style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px dashed #cccccc', padding: '10px', backgroundColor: '#ffffff' }} />
+              <img src={Received} alt="Complete" style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px dashed #cccccc', padding: '10px', backgroundColor: '#ffffff' }} />
               <p style={{ marginTop: '10px', fontSize: '14px', color: '#cccccc' }}>Complete</p>
             </div>
           </div>
@@ -45,7 +52,7 @@ const TicketTransferEmail = () => {
           </div>
 
           <div>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgQwS1OSDZIEnrX_4pNk-rT2tCo0GJic_Rng&s" alt="Saints Logo" style={{ width: '100%', maxWidth: '600px' }} />
+            <img src={Main} alt="Saints Logo" style={{ width: '100%', maxWidth: '600px' }} />
           </div>
 
           <div style={{ marginTop: '20px', paddingBottom: '30px' }}>
@@ -65,10 +72,10 @@ const TicketTransferEmail = () => {
         <div style={{ backgroundColor: '#0046bf', color: '#ffffff', padding: '40px 0', textAlign: 'center', fontSize: '14px', margin: 'auto' }}>
           <div>Stay Connected</div>
           <div style={{ marginBottom: '20px', marginTop: '20px' }}>
-            <a href="#"><img src="https://uk.tmconst.com/production-10-114-3-9211363/images/logo/facebook.svg" alt="Facebook" style={{ width: '24px', margin: '0 10px', verticalAlign: 'middle' }} /></a>
-            <a href="#"><img src="https://uk.tmconst.com/production-10-114-3-9211363/images/logo/instagram.svg" alt="Instagram" style={{ width: '24px', margin: '0 10px', verticalAlign: 'middle' }} /></a>
-            <a href="#"><img src="https://uk.tmconst.com/production-10-114-3-9211363/images/logo/x.svg" alt="Cross Icon" style={{ width: '24px', margin: '0 10px', verticalAlign: 'middle' }} /></a>
-            <a href="#"><img src="https://uk.tmconst.com/production-10-114-3-9211363/images/logo/youtube.svg" alt="YouTube" style={{ width: '24px', margin: '0 10px', verticalAlign: 'middle' }} /></a>
+            <a href="#"><img src={FB} alt="Facebook" style={{ width: '24px', margin: '0 10px', verticalAlign: 'middle' }} /></a>
+            <a href="#"><img src={IG} alt="Instagram" style={{ width: '24px', margin: '0 10px', verticalAlign: 'middle' }} /></a>
+            <a href="#"><img src={X} alt="Cross Icon" style={{ width: '24px', margin: '0 10px', verticalAlign: 'middle' }} /></a>
+            <a href="#"><img src={YT} alt="YouTube" style={{ width: '24px', margin: '0 10px', verticalAlign: 'middle' }} /></a>
           </div>
 
           <div style={{ margin: '20px 0' }}>
