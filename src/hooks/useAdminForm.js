@@ -1,5 +1,4 @@
-// useAdminForm.js
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const useAdminForm = (initialEvent) => {
   const [eventData, setEventData] = useState({
@@ -7,9 +6,8 @@ const useAdminForm = (initialEvent) => {
     description: '',
     startDate: '',
     endDate: '',
-    organizers: [],
     eventType: 'voting',
-    categories: [],
+    organizers:''
   });
 
   useEffect(() => {
@@ -19,56 +17,52 @@ const useAdminForm = (initialEvent) => {
   }, [initialEvent]);
 
   const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-
-    if (type === 'file') {
-      
-      const file = files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setEventData({ ...eventData, [name]: reader.result });
-      };
-      if (file) {
-        reader.readAsDataURL(file);
-      }
-    } else {
-      
-      setEventData({ ...eventData, [name]: value });
-    }
+    const { name, value } = e.target;
+    setEventData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleAddCategory = () => {
-    setEventData({
-      ...eventData,
-      categories: [...eventData.categories, { name: '', nominees: [] }],
-    });
+    setEventData((prevData) => ({
+      ...prevData,
+      categories: [...prevData.categories, { name: '', nominees: [] }],
+    }));
   };
 
   const handleAddNominee = (categoryIndex) => {
-    const updatedCategories = [...eventData.categories];
-    updatedCategories[categoryIndex].nominees.push({ name: '', imageUrl: '' });
-    setEventData({ ...eventData, categories: updatedCategories });
+    setEventData((prevData) => {
+      const updatedCategories = [...prevData.categories];
+      updatedCategories[categoryIndex].nominees.push({ name: '', imageUrl: '' });
+      return { ...prevData, categories: updatedCategories };
+    });
   };
 
   const handleCategoryNameChange = (e, categoryIndex) => {
-    const updatedCategories = [...eventData.categories];
-    updatedCategories[categoryIndex].name = e.target.value;
-    setEventData({ ...eventData, categories: updatedCategories });
+    const { value } = e.target;
+    setEventData((prevData) => {
+      const updatedCategories = [...prevData.categories];
+      updatedCategories[categoryIndex].name = value;
+      return { ...prevData, categories: updatedCategories };
+    });
   };
 
   const handleNomineeChange = (e, categoryIndex, nomineeIndex) => {
-    const updatedCategories = [...eventData.categories];
-    updatedCategories[categoryIndex].nominees[nomineeIndex][e.target.name] = e.target.value;
-    setEventData({ ...eventData, categories: updatedCategories });
+    const { name, value } = e.target;
+    setEventData((prevData) => {
+      const updatedCategories = [...prevData.categories];
+      updatedCategories[categoryIndex].nominees[nomineeIndex][name] = value;
+      return { ...prevData, categories: updatedCategories };
+    });
   };
 
   const handleImageUpload = (e, categoryIndex, nomineeIndex) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      const updatedCategories = [...eventData.categories];
-      updatedCategories[categoryIndex].nominees[nomineeIndex].imageUrl = reader.result;
-      setEventData({ ...eventData, categories: updatedCategories });
+      setEventData((prevData) => {
+        const updatedCategories = [...prevData.categories];
+        updatedCategories[categoryIndex].nominees[nomineeIndex].imageUrl = reader.result;
+        return { ...prevData, categories: updatedCategories };
+      });
     };
     if (file) {
       reader.readAsDataURL(file);
@@ -77,13 +71,12 @@ const useAdminForm = (initialEvent) => {
 
   const resetForm = () => {
     setEventData({
-      name: '',
+      title: '',
       description: '',
       startDate: '',
       endDate: '',
-      organizers: [],
       eventType: 'voting',
-      categories: [],
+    //   categories: [],
     });
   };
 

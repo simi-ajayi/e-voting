@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import SignOutButton from './SignOutButton';
 import backgroundImage from '../assets/thumb.jpg';
@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const UserAccountPage = () => {
   const [events, setEvents] = useState([]);
-  const [searchParams] = useSearchParams();
+  // const [searchParams] = useSearchParams();
   const adminuserId = localStorage.getItem('adminId');
 
   console.log('Admin User ID:', adminuserId)

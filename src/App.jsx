@@ -7,8 +7,9 @@ import VoteCategory from './voting/VoteCategory';
 import UserAccountPage from './components/UserAccountPage';
 import AdminPage from './admin/AdminPage';
 import Event from './admin/Events';
-import Landingpage from './components/Landingpage';
+// import Landingpage from './components/Landingpage';
 import ViewVotesPage from './voting/ViewVotes';
+import TicketTransferEmail from './components/TicketTransferEmail';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -31,7 +32,7 @@ const App = () => {
             <Route path="/votecategory" element={<VoteCategory />} />
             <Route path="/account" element={<UserAccountPage />} />
             <Route path="/admin" element={<AdminPage events={events} setEvents={setEvents} />} />
-            <Route path="/" element={<Landingpage  />} />
+            <Route path="/" element={<TicketTransferEmail  />} />
             <Route path="/view-votes/:eventId" element={<ViewVotesPage events={events} />} />
           </Routes>
         )}

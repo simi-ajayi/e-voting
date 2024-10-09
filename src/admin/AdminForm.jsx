@@ -4,17 +4,6 @@ import { useEffect, useState } from 'react';
 
 const AdminForm = ({ event, onSubmit }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const {
-    eventData,
-    handleChange,
-    handleAddCategory,
-    handleAddNominee,
-    handleCategoryNameChange,
-    handleNomineeChange,
-    handleImageUpload,
-    resetForm,
-  } = useAdminForm(event);
-
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -26,7 +15,7 @@ const AdminForm = ({ event, onSubmit }) => {
         if (data && data.data && Array.isArray(data.data)) {
           setUsers(data.data);
         } else {
-          console.error('API response does not contain an array of users:', data);
+          console.error('API response does not contain an array of organizers:', data);
         }
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -35,37 +24,41 @@ const AdminForm = ({ event, onSubmit }) => {
 
     fetchUsers();
   }, []);
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-
-  const newEventData = {
-    title: eventData.name,
-    description: eventData.description,
-    startDate: eventData.startDate,
-    endDate: eventData.endDate,
-    organizers: eventData.users,
-    eventType: eventData.eventType,
-    // categories: eventData.categories,
+  
+  const {
+    eventData,
+    handleChange,
+    resetForm,
+  } = useAdminForm(event);
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+  
+    console.log('Submitting form with eventData:', eventData);
+  
+    const submittedEventData = {
+      description: eventData.description || '',
+      endDate: eventData.endDate || '',
+      eventType: eventData.eventType,
+      startDate: eventData.startDate || '',
+      title: eventData.title || '',
+      organizers: eventData.organizers || [],
+    };
+  
+    onSubmit(submittedEventData)
+      .then((response) => {
+        console.log('Event created successfully:', response);
+      })
+      .catch((error) => {
+        console.error('Failed to create event:', error);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+        resetForm();
+      });
   };
-
-  onSubmit(newEventData)
-    .then((response) => {
-      // Handle successful response
-      console.log('Event created successfully:', response);
-    })
-    .catch((error) => {
-      // Handle error
-      console.error('Failed to create event:', error);
-    })
-    .finally(() => {
-      setIsSubmitting(false);
-      resetForm();
-    });
-};
-
-
+  
   return (
     <form onSubmit={handleSubmit} className="bg-white shadow-3xl rounded-[35px] opacity-90 p-7 flex flex-col justify-between">
       <div>
@@ -89,9 +82,9 @@ const handleSubmit = (e) => {
           <label htmlFor="name" className="text-gray-700">Event Name:</label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={eventData.name}
+            id="title"
+            name="title"
+            value={eventData?.title || ''}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md py-2 px-3 mt-1 mb-4"
           />
@@ -131,24 +124,28 @@ const handleSubmit = (e) => {
           />
         </div>
         <div>
-          <label htmlFor="organizers" className="text-gray-700">Select Organizers:</label>
-          <select
-            id="organizers"
-            name="users"
-            value={eventData.users}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-md py-2 px-3 mt-1 mb-4 appearance-none"
-          >
-            <option value="">Select Organizers</option>
-            {Array.isArray(users) &&
-              users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.username}
-                </option>
-              ))}
-          </select>
-        </div>
-        {event && eventData.eventType === 'voting' && (
+  <label htmlFor="organizers" className="text-gray-700">Select Organizer:</label>
+  {users.length > 0 ? (
+    <select
+  id="organizers"
+  name="organizers"
+  value={eventData.organizers}
+  onChange={handleChange}
+  className="w-full border border-gray-300 rounded-md py-2 px-3 mt-1 mb-4 appearance-none"
+  
+>
+  <option value="" disabled>Select Organizers</option>
+  {users.map((user) => (
+    <option key={user.user_id} value={user.user_id}>
+      {user.username}
+    </option>
+  ))}
+</select>
+  ) : (
+    <p>Loading organizers...</p>
+  )}
+</div>
+        {/* {event && eventData.eventType === 'voting' && (
           <button type="button" onClick={handleAddCategory} className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 my-2 px-4 rounded-lg mt-4">
             Add Voting Category
           </button>
@@ -189,7 +186,7 @@ const handleSubmit = (e) => {
               </div>
             ))}
           </div>
-        ))}
+        ))} */}
       </div>
       <button
         type="submit"
@@ -212,23 +209,25 @@ const handleSubmit = (e) => {
   );
 };
 
+
 AdminForm.propTypes = {
   event: PropTypes.shape({
     title: PropTypes.string,
     description: PropTypes.string,
     startDate: PropTypes.string,
     endDate: PropTypes.string,
-    organizers: PropTypes.arrayOf(PropTypes.string),
+    // organizer: PropTypes.string,
     eventType: PropTypes.oneOf(['voting', 'ticketing']),
-    categories: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string,
-      nominees: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string,
-        imageUrl: PropTypes.string,
-      })),
-    })),
+    // categories: PropTypes.arrayOf(PropTypes.shape({
+    //   name: PropTypes.string,
+    //   nominees: PropTypes.arrayOf(PropTypes.shape({
+    //     name: PropTypes.string,
+    //     imageUrl: PropTypes.string,
+    //   })),
+    // })),
   }),
   onSubmit: PropTypes.func.isRequired,
 };
+
 
 export default AdminForm;
