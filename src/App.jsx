@@ -24,19 +24,17 @@ const App = () => {
     <Router>
       <ScrollToTop />
       <Arrowtothetop />
-      <Event>
-        {({ events, setEvents }) => (
+
           <Routes>
-            <Route path="/auth/*" element={<AuthForm setEvents={setEvents} />} />
+            {/* <Route path="/auth/*" element={<AuthForm setEvents={setEvents} />} />
             <Route path="/home/:eventId" element={<Nominees events={events} />} />
-            <Route path="/votecategory" element={<VoteCategory />} />
+            <Route path="/votecategory" element={<VoteCategory />} /> */}
             <Route path="/account" element={<UserAccountPage />} />
-            <Route path="/admin" element={<AdminPage events={events} setEvents={setEvents} />} />
+            <Route path="/admin" element={<AdminPage/>} />
             <Route path="/" element={<TicketTransfer  />} />
-            <Route path="/view-votes/:eventId" element={<ViewVotesPage events={events} />} />
+            {/* <Route path="/view-votes/:eventId" element={<ViewVotesPage events={events} />} /> */}
           </Routes>
-        )}
-      </Event>
+   
     </Router>
   );
 };
