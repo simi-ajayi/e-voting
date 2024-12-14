@@ -73,12 +73,16 @@ const TicketTransfer = () => {
             </div>
           </div>
 
+          
+
           {/* Main Logo */}
           <img
             src={ticket.logoUrl || MainPlaceholder}
             alt="Main Logo"
             className="w-full"
           />
+
+          
         </div>
       </div>
 
@@ -102,7 +106,7 @@ const TicketTransfer = () => {
         onClick={closeModal}
       />
       <div
-        className={`fixed inset-x-0 bottom-0 z-50 h-[65vh] max-h-[80vh] transform transition-transform duration-300 ${
+        className={`fixed inset-x-0 bottom-0 z-50 h-[50vh] max-h-[80vh] transform transition-transform duration-300 ${
           isVisible ? "translate-y-0" : "translate-y-full"
         }`}
       >
@@ -116,8 +120,8 @@ const TicketTransfer = () => {
           </div>
 
           {/* Ticket Details */}
-          <div className="p-4">
-            <p className="text-sm text-gray-700 font-medium mb-2">
+          <div className="p-2">
+            <p className="text-sm text-gray-700 font-medium">
             {ticket.number || "2"} Tickets Selected
             </p>
             <div className="text-sm text-[#6C6F70] gap-8 flex">
@@ -134,7 +138,7 @@ const TicketTransfer = () => {
           </div>
 
           {/* Form */}
-          <div className="p-4">
+          <div className="p-2">
             <form className="space-y-4">
               <div>
                 <label className="block text-sm text-gray-600" htmlFor="firstName">
@@ -175,7 +179,7 @@ const TicketTransfer = () => {
                 </label>
                 <textarea
                   id="note"
-                  className="w-full border border-black px-3 py-2 text-sm h-[100px] focus:outline-none focus:ring focus:ring-blue-200"
+                  className="w-full border border-black px-3 py-2 text-sm h-[60px] focus:outline-none focus:ring focus:ring-blue-200"
                   placeholder="Note"
                 ></textarea>
               </div>
