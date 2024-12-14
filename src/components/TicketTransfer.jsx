@@ -3,8 +3,9 @@ import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import MainPlaceholder from '../assets/unnamed.jpg'; 
 import { FaChevronLeft } from "react-icons/fa";
-import { FaXmark } from "react-icons/fa6";
+import { FaBarcode, FaXmark } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const TicketTransfer = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -15,6 +16,11 @@ const TicketTransfer = () => {
     row: "",
     seat: "",
     logoUrl: "",
+    gate: "",
+    teamone: "",
+    teamtwo: "",
+    location: "",
+    time: "",
   });
 
   const openModal = () => setIsVisible(true);
@@ -50,7 +56,7 @@ const TicketTransfer = () => {
         </div>
 
         <div className="mx-3">
-          <div className="bg-blue-500 h-[170px] flex-row rounded-t-[10px] mt-2">
+          <div className="bg-blue-500 h-[140px] flex-row rounded-t-[10px] mt-2">
             <div className="justify-center text-white rounded-t-[10px] mx-auto bg-blue-700 p-3 text-lg">
               <div className="flex justify-center">
                 {ticket.title || "Standard Ticket"}
@@ -59,7 +65,7 @@ const TicketTransfer = () => {
 
             {/* Main Ticket */}
             <div className="text-xl m-auto justify-center text-white gap-20 flex">
-              <div className="flex gap-20 mt-7">
+              <div className="flex gap-20 mt-4">
                 <div className="flex-row">
                   Sec <div>{ticket.section || "C113"}</div>
                 </div>
@@ -76,27 +82,65 @@ const TicketTransfer = () => {
           
 
           {/* Main Logo */}
-          <img
-            src={ticket.logoUrl || MainPlaceholder}
-            alt="Main Logo"
-            className="w-full"
-          />
+          <div className="relative w-full h-[230px]">
+            <img
+                src={ticket.logoUrl || MainPlaceholder}
+                alt="Main Logo"
+                className="w-full h-full object-cover"
+            />
+            <div className="absolute bottom-0 left-0 w-full bg-black border-none bg-opacity-10 text-white text-center py-2">
+                <div className="text-xl font-medium">{ticket.teamone || "Denver Broncos"} vs. {ticket.teamtwo || "Atlanta Falcons"}</div>
+                <div className="text-sm">{ticket.time || "Sun, Nov 17, 2:05pm"} &#8226; {ticket.location || "Empower Field at Mile High"}</div>
+            </div>
+          </div>
+
+          <div className="bg-white text-black shadow-md rounded-b-[10px] h-[170px]">
+          <div className="text-base m-auto justify-center text-black gap-20 flex">
+              <div className="flex-col space-y-3 mt-7">
+                <div className="flex font-light">
+                  <div className="mx-auto">Recommended: <span className="">{ticket.gate || "Gate 7"}</span></div>
+                </div>
+                <div className="flex bg-blue-600 w-[360px] text-white">
+                  <div className="justify-center px-3 py-2 mx-auto"> View Ticket</div> 
+                </div>
+                <div className="flex justify-center">
+                 Ticket Details
+                </div>
+              </div>
+            </div>
+          </div>
 
           
         </div>
       </div>
+      
+      <div className="mt-5">
+      <div className="flex justify-center space-x-2">
+            <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+            <span className="w-2 h-2 rounded-full bg-gray-300"></span>
+            <span className="w-2 h-2 rounded-full bg-gray-300"></span>
+            <span className="w-2 h-2 rounded-full bg-gray-300"></span>
+            <span className="w-2 h-2 rounded-full bg-gray-300"></span>
+          </div>
+      </div>
 
       {/* Trigger Button */}
-      <button
-        className="bg-blue-500 text-white text-sm px-4 py-2 rounded font-medium hover:bg-blue-600"
+        <div className="flex mt-4">
+        <div className="flex gap-8 mx-auto">
+    <button
+        className="bg-blue-500 text-white text-sm px-4 w-[150px] py-2 rounded font-medium hover:bg-blue-600"
         onClick={openModal}
       >
-        Transfer Tickets
+        Transfer
       </button>
-
-<div className="text-blue-600 mt-20 ">
-<Link to='/admin'>Admin? Click here</Link>
-</div>
+      <button
+        className="bg-blue-500 text-white text-sm w-[150px] px-4 py-2 rounded font-medium hover:bg-blue-600"
+        onClick={openModal}
+      >
+    <Link to='/admin'>Sell</Link>
+      </button>
+    </div>
+        </div>
 
       {/* Sliding Modal */}
       <div
@@ -113,9 +157,6 @@ const TicketTransfer = () => {
         <div className="w-full max-w-md bg-white shadow-lg rounded-lg mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b">
-            <button className="text-gray-600 text-xl" onClick={closeModal}>
-              <FaChevronLeft />
-            </button>
             <h2 className="text-lg mx-auto font-semibold">TRANSFER TICKETS</h2>
           </div>
 

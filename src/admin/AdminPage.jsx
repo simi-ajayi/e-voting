@@ -10,7 +10,12 @@ const AdminPage = () => {
     number: "",
     row: "",
     seat: "",
+    gate: "",
     logoUrl: "",
+    teamone: "",
+    teamtwo: "",
+    location: "",
+    time: "",
   });
   const [newLogo, setNewLogo] = useState(null);
 
@@ -110,6 +115,20 @@ const AdminPage = () => {
           />
         </div>
         <div>
+          <label className="block text-sm font-medium" htmlFor="section">
+           Gate
+          </label>
+          <input
+            type="text"
+            id="gate"
+            name="gate"
+            value={ticket.gate}
+            onChange={handleInputChange}
+            className="w-full border px-3 py-2"
+            placeholder="Gate 7"
+          />
+        </div>
+        <div>
           <label className="block text-sm font-medium" htmlFor="row">
             Row
           </label>
@@ -151,6 +170,64 @@ const AdminPage = () => {
             placeholder="No of Tickets"
           />
         </div>
+        <div>
+          <label className="block text-sm font-medium" htmlFor="seat">
+            Team one
+          </label>
+          <input
+            type="text"
+            id="teamone"
+            name="teamone"
+            value={ticket.teamone}
+            onChange={handleInputChange}
+            className="w-full border px-3 py-2"
+            placeholder="Team one"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium" htmlFor="seat">
+            Team two
+          </label>
+          <input
+            type="text"
+            id="teamtwo"
+            name="teamtwo"
+            value={ticket.teamtwo}
+            onChange={handleInputChange}
+            className="w-full border px-3 py-2"
+            placeholder="Team two"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium" htmlFor="seat">
+            Location
+          </label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            value={ticket.location}
+            onChange={handleInputChange}
+            className="w-full border px-3 py-2"
+            placeholder="Empower Field at Mile High"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium" htmlFor="seat">
+            Time
+          </label>
+          <input
+            type="text"
+            id="time"
+            name="time"
+            value={ticket.time}
+            onChange={handleInputChange}
+            className="w-full border px-3 py-2"
+            placeholder="Sun, Nov 17, 2:05pm"
+          />
+        </div>
+
         <div>
           <label className="block text-sm font-medium" htmlFor="logo">
             Ticket Logo
