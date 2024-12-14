@@ -56,8 +56,8 @@ const TicketTransfer = () => {
   onClick={closeModal}
 />
 <div
-  className={`relative inset-0 bg-gray-100 z-50 transform transition-transform duration-300 ${
-    isVisible ? "translate-y-[-235px]" : "translate-y-full"
+  className={`fixed inset-x-0 bottom-0 bg-gray-100 z-50 h-[60vh] transform transition-transform duration-300 ${
+    isVisible ? "translate-y-0" : "translate-y-full"
   }`}
 >
         <div className="w-full max-w-md bg-white shadow-lg rounded-lg mx-auto mt-10">
