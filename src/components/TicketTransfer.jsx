@@ -56,11 +56,11 @@ const TicketTransfer = () => {
   onClick={closeModal}
 />
 <div
-  className={`fixed inset-x-0 bottom-0 bg-gray-100 z-50 h-[60vh] transform transition-transform duration-300 ${
+  className={`fixed inset-x-0 bottom-0 bg-gray-100 z-50 h-[65vh] transform transition-transform duration-300 ${
     isVisible ? "translate-y-0" : "translate-y-full"
   }`}
 >
-        <div className="w-full max-w-md bg-white shadow-lg rounded-lg mx-auto mt-10">
+        <div className="w-full max-w-md bg-white shadow-lg rounded-lg mx-auto ">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b">
             <button
