@@ -6,6 +6,7 @@ import { FaChevronLeft } from "react-icons/fa";
 import { FaBarcode, FaXmark } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { CiBarcode } from "react-icons/ci";
 
 const TicketTransfer = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -101,7 +102,7 @@ const TicketTransfer = () => {
                   <div className="mx-auto">Recommended: <span className="">{ticket.gate || "Gate 7"}</span></div>
                 </div>
                 <div className="flex bg-blue-600 w-[360px] text-white">
-                  <div className="justify-center px-3 py-2 mx-auto"> View Ticket</div> 
+                  <div className="justify-center flex items-center gap-2 px-3 py-2 mx-auto"> <CiBarcode/> View Ticket</div> 
                 </div>
                 <div className="flex justify-center">
                  Ticket Details
@@ -133,12 +134,9 @@ const TicketTransfer = () => {
       >
         Transfer
       </button>
-      <button
-        className="bg-blue-500 text-white text-sm w-[150px] px-4 py-2 rounded font-medium hover:bg-blue-600"
-        onClick={openModal}
-      >
-    <Link to='/admin'>Sell</Link>
-      </button>
+   
+    <Link className="bg-blue-500 text-white text-sm w-[150px] flex px-4 py-2 rounded font-medium hover:bg-blue-600"to='/admin'><div className="mx-auto">Sell</div></Link>
+     
     </div>
         </div>
 
